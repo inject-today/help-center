@@ -33,7 +33,9 @@ jobs:
             gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --add-label "product/$slug"
           done
 
-          external=$(gh pr diff "$PR" -R "$GITHUB_REPOSITORY" \
+          # Only links added to guides matter here; site code links are reviewed by admins.
+          external=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/files" --paginate \
+              --jq '.[] | select(.filename | startswith("src/content/docs/")) | .patch // ""' \
             | grep -E '^\+[^+]' | grep -oiE 'https?://[^ )<>"]+' \
             | grep -viE '^https?://(www\.)?(inject\.today|github\.com/inject-today)([/?#]|$)' || true)
           if [ -n "$external" ]; then
