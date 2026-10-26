@@ -27,9 +27,14 @@ export default defineConfig({
 			credits: false,
 			// Sidebars are built per product in src/routeData.ts.
 			routeMiddleware: './src/routeData.ts',
-			customCss: ['./src/styles/custom.css'],
+			customCss: [
+				'@fontsource-variable/geist',
+				'@fontsource-variable/geist-mono',
+				'./src/styles/custom.css',
+			],
 			components: {
 				Head: './src/components/overrides/Head.astro',
+				SiteTitle: './src/components/overrides/SiteTitle.astro',
 				PageTitle: './src/components/overrides/PageTitle.astro',
 				Sidebar: './src/components/overrides/Sidebar.astro',
 				Footer: './src/components/overrides/Footer.astro',

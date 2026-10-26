@@ -4,7 +4,7 @@
 import type { APIRoute } from 'astro';
 import { categories, products } from '../../lib/products';
 
-const AUTH_URL = 'https://inject-today-cms-auth.fatasscatto.workers.dev';
+const AUTH_URL = 'https://inject-today-cms-auth.injecttoday.workers.dev';
 
 const guideFields = [
 	{

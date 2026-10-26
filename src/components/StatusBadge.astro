@@ -3,48 +3,38 @@ import { statusLabel, type ProductStatus } from '../lib/products';
 
 interface Props {
 	status: ProductStatus;
-	/** Hide the label and keep only the dot (the label stays for screen readers). */
-	compact?: boolean;
 }
 
-const { status, compact = false } = Astro.props;
+const { status } = Astro.props;
 ---
 
-<span class:list={['status', status, { compact }]}>
-	<span class="dot" aria-hidden="true"></span>
-	<span class:list={{ 'sr-only': compact }}>{statusLabel[status]}</span>
+<span class:list={['status', status]}>
+	<span class="dot" aria-hidden="true"></span>{statusLabel[status]}
 </span>
 
 <style>
 	.status {
-		--tone: var(--sl-color-green);
+		--tone: var(--it-ok);
 		display: inline-flex;
 		align-items: center;
-		gap: 0.375rem;
-		padding: 0.125rem 0.5rem 0.125rem 0.4375rem;
-		border-radius: 999px;
+		gap: 0.4375rem;
 		font-size: var(--sl-text-xs);
-		font-weight: 500;
-		line-height: 1.5;
+		font-weight: 550;
+		line-height: 1;
 		color: var(--sl-color-gray-2);
-		background: color-mix(in oklab, var(--tone) 12%, transparent);
 		white-space: nowrap;
 	}
 	.updating {
-		--tone: var(--sl-color-orange);
+		--tone: var(--it-warn);
 	}
 	.down {
-		--tone: var(--sl-color-red);
-	}
-	.compact {
-		padding: 0;
-		background: none;
+		--tone: var(--it-bad);
 	}
 	.dot {
 		inline-size: 0.4375rem;
 		block-size: 0.4375rem;
 		border-radius: 50%;
 		background: var(--tone);
-		box-shadow: 0 0 0 3px color-mix(in oklab, var(--tone) 22%, transparent);
+		box-shadow: 0 0 0 3px color-mix(in oklab, var(--tone) 20%, transparent);
 	}
 </style>

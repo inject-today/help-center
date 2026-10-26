@@ -1,0 +1,92 @@
+---
+// A product's app icon: its WEAO logo on a squircle tile, or its initials
+// when there's no logo. Tiles stay dark in both themes, like real app icons.
+import { Image } from 'astro:assets';
+import { hueFor, logoFor, monogram, tintFor, type Product } from '../lib/products';
+
+interface Props {
+	product: Product;
+	/** Edge length in pixels. */
+	size?: number;
+	/** Throw a soft shadow in the product's own color. */
+	tinted?: boolean;
+	loading?: 'eager' | 'lazy';
+}
+
+const { product, size = 40, tinted = false, loading = 'lazy' } = Astro.props;
+const logo = logoFor(product);
+const fit = logo ? (product.logoFit ?? 'contain') : 'letters';
+// Wordmark-style logos need the room more than square marks do.
+const wide = logo !== undefined && logo.width / logo.height > 1.25;
+---
+
+<span
+	class:list={['icon', fit, { tinted, wide }]}
+	style={`--size: ${size}px; --hue: ${hueFor(product.slug)}; --tint: ${tintFor(product)}`}
+	aria-hidden="true"
+>
+	{
+		logo ? (
+			<Image src={logo} alt="" width={Math.min(size * 2, logo.width)} loading={loading} decoding="async" />
+		) : (
+			monogram(product.name)
+		)
+	}
+</span>
+
+<style>
+	.icon {
+		position: relative;
+		display: inline-grid;
+		place-items: center;
+		flex-shrink: 0;
+		inline-size: var(--size);
+		block-size: var(--size);
+		/* Close to the iOS icon corner radius. */
+		border-radius: calc(var(--size) * 0.24);
+		overflow: hidden;
+		background: hsl(228 12% 10%);
+		isolation: isolate;
+	}
+	/* Edge highlight drawn over the artwork, like light catching the tile's rim. */
+	.icon::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow:
+			inset 0 0 0 1px hsl(0 0% 100% / 0.08),
+			inset 0 1px 0 hsl(0 0% 100% / 0.1);
+		pointer-events: none;
+	}
+	.tinted {
+		box-shadow:
+			0 1px 2px hsl(228 40% 2% / 0.35),
+			0 10px 28px -10px color-mix(in oklab, var(--tint) 55%, transparent);
+	}
+
+	.icon :global(img) {
+		inline-size: 100%;
+		block-size: 100%;
+	}
+	.cover :global(img) {
+		object-fit: cover;
+	}
+	.contain :global(img) {
+		object-fit: contain;
+		padding: 17%;
+	}
+	.contain.wide :global(img) {
+		padding: 9%;
+	}
+
+	.letters {
+		background: linear-gradient(160deg, hsl(var(--hue) 38% 30%), hsl(var(--hue) 42% 13%));
+		color: hsl(var(--hue) 60% 90%);
+		font-size: calc(var(--size) * 0.36);
+		font-weight: 650;
+		letter-spacing: -0.03em;
+		line-height: 1;
+		user-select: none;
+	}
+</style>

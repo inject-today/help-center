@@ -9,6 +9,8 @@
 		"html_handling": "auto-trailing-slash"
 	},
 	"workers_dev": true,
-	"preview_urls": true
+	"preview_urls": true,
+	// Pull requests get their own preview (Workers Builds runs `wrangler preview` for them).
+	"previews": {}
 	// Going live: add  "routes": [{ "pattern": "inject.today", "custom_domain": true }]
 }

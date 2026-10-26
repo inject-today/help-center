@@ -1,0 +1,130 @@
+---
+// A segmented filter. The highlighted segment is a copy of the row clipped
+// to the active option, so its background and text color move as one piece.
+interface Props {
+	label: string;
+	options: { value: string; label: string }[];
+}
+
+const { label, options } = Astro.props;
+---
+
+<div class="segmented" role="group" aria-label={label} data-segmented>
+	<div class="row">
+		{
+			options.map((option, i) => (
+				<button type="button" data-value={option.value} aria-pressed={i === 0 ? 'true' : 'false'}>
+					{option.label}
+				</button>
+			))
+		}
+	</div>
+	<div class="row highlight" aria-hidden="true" data-highlight>
+		{options.map((option) => <span>{option.label}</span>)}
+	</div>
+</div>
+
+<script>
+	for (const group of document.querySelectorAll<HTMLElement>('[data-segmented]')) {
+		const buttons = [...group.querySelectorAll<HTMLButtonElement>('button')];
+		const highlight = group.querySelector<HTMLElement>('[data-highlight]')!;
+
+		const place = () => {
+			const current = buttons.find((b) => b.getAttribute('aria-pressed') === 'true') ?? buttons[0];
+			const left = current.offsetLeft - highlight.offsetLeft;
+			const right = highlight.offsetWidth - (left + current.offsetWidth);
+			highlight.style.clipPath = `inset(0 ${right}px 0 ${left}px round 0.5625rem)`;
+		};
+
+		for (const button of buttons) {
+			button.addEventListener('click', () => {
+				for (const b of buttons) b.setAttribute('aria-pressed', String(b === button));
+				place();
+				group.dispatchEvent(
+					new CustomEvent('segmentchange', { detail: button.dataset.value, bubbles: true })
+				);
+			});
+		}
+
+		// Place it before enabling the transition, so it doesn't slide in on load.
+		place();
+		requestAnimationFrame(() => group.setAttribute('data-ready', ''));
+		new ResizeObserver(place).observe(group);
+	}
+</script>
+
+<style>
+	.segmented {
+		position: relative;
+		display: inline-grid;
+		padding: 0.1875rem;
+		border-radius: 0.75rem;
+		background: var(--sl-color-gray-6);
+		box-shadow: inset 0 0 0 1px var(--it-edge);
+		max-inline-size: 100%;
+	}
+	.row {
+		grid-area: 1 / 1;
+		display: flex;
+		gap: 0.125rem;
+	}
+	button,
+	span {
+		display: inline-grid;
+		place-items: center;
+		block-size: 2.125rem;
+		padding: 0 0.875rem;
+		border: 0;
+		border-radius: 0.5625rem;
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		font-weight: 550;
+		white-space: nowrap;
+	}
+	button {
+		color: var(--sl-color-gray-3);
+		background: none;
+		cursor: pointer;
+		transition: color 150ms ease;
+		-webkit-tap-highlight-color: transparent;
+	}
+	button:focus-visible {
+		outline: 2px solid var(--sl-color-white);
+		outline-offset: -2px;
+	}
+	@media (hover: hover) and (pointer: fine) {
+		button:hover {
+			color: var(--sl-color-gray-1);
+		}
+	}
+	.highlight {
+		pointer-events: none;
+		clip-path: inset(0 100% 0 0 round 0.5625rem);
+	}
+	.highlight span {
+		color: var(--sl-color-white);
+		background: hsl(228 9% 22%);
+		box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.08);
+	}
+	:global([data-theme='light']) .highlight span {
+		background: hsl(0 0% 100%);
+		box-shadow:
+			0 1px 2px hsl(228 30% 30% / 0.12),
+			inset 0 0 0 1px var(--it-edge);
+	}
+	/* Moving on screen: ease-in-out. */
+	.segmented[data-ready] .highlight {
+		transition: clip-path 250ms var(--it-ease-in-out);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.segmented[data-ready] .highlight {
+			transition: none;
+		}
+	}
+	@media (max-width: 30rem) {
+		button,
+		span {
+			padding: 0 0.625rem;
+		}
+	}
+</style>

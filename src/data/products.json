@@ -29,7 +29,9 @@
 		"weaoIds": [
 			"WEAO765cd973"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "cover",
+		"color": "#fa0505"
 	},
 	{
 		"name": "Cosmic",
@@ -44,7 +46,8 @@
 		"weaoIds": [
 			"WEAOmhg67xtg"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "contain"
 	},
 	{
 		"name": "Delta",
@@ -63,7 +66,8 @@
 			"WEAO719ba76e"
 		],
 		"status": "active",
-		"featured": 2
+		"featured": 2,
+		"logoFit": "cover"
 	},
 	{
 		"name": "DX9WARE V2",
@@ -95,7 +99,8 @@
 		"weaoIds": [
 			"WEAO28fj47ht"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "contain"
 	},
 	{
 		"name": "Lumen",
@@ -144,7 +149,8 @@
 		"weaoIds": [
 			"WEAO4a1j38nv"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "contain"
 	},
 	{
 		"name": "Madius",
@@ -210,7 +216,9 @@
 			"WEAO442fb725"
 		],
 		"status": "active",
-		"featured": 7
+		"featured": 7,
+		"logoFit": "cover",
+		"color": "#396ec6"
 	},
 	{
 		"name": "Photon",
@@ -243,7 +251,8 @@
 			"WEAO00393718"
 		],
 		"status": "active",
-		"featured": 4
+		"featured": 4,
+		"logoFit": "cover"
 	},
 	{
 		"name": "Real",
@@ -259,7 +268,8 @@
 		"weaoIds": [
 			"WEAO4a1f93j6"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "contain"
 	},
 	{
 		"name": "Ronin",
@@ -275,7 +285,9 @@
 		"weaoIds": [
 			"WEAO622afd8b"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "cover",
+		"color": "#9379d8"
 	},
 	{
 		"name": "Serotonin",
@@ -323,7 +335,9 @@
 		"weaoIds": [
 			"WEAO5caeb4a7"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "contain",
+		"color": "#1261ed"
 	},
 	{
 		"name": "Solara",
@@ -339,7 +353,9 @@
 		"weaoIds": [
 			"WEAO1af938a2"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "cover",
+		"color": "#6604fb"
 	},
 	{
 		"name": "Synapse Z",
@@ -387,7 +403,8 @@
 		"weaoIds": [
 			"WEAO4a1e0747"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "contain"
 	},
 	{
 		"name": "Volcano",
@@ -403,7 +420,9 @@
 		"weaoIds": [
 			"WEAO57c866d0"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "contain",
+		"color": "#db783a"
 	},
 	{
 		"name": "Volt",
@@ -420,7 +439,9 @@
 			"WEAO0fc0936f"
 		],
 		"status": "active",
-		"featured": 1
+		"featured": 1,
+		"logoFit": "contain",
+		"color": "#7e5af7"
 	},
 	{
 		"name": "Wave",
@@ -437,7 +458,9 @@
 			"WEAO2c8e5827"
 		],
 		"status": "active",
-		"featured": 8
+		"featured": 8,
+		"logoFit": "cover",
+		"color": "#398fc6"
 	},
 	{
 		"name": "Xeno",
@@ -453,6 +476,8 @@
 		"weaoIds": [
 			"WEAO08b7927f"
 		],
-		"status": "active"
+		"status": "active",
+		"logoFit": "cover",
+		"color": "#7997d8"
 	}
 ]

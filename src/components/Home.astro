@@ -1,0 +1,175 @@
+---
+// Home page body, under the headline: find a product, or browse them all.
+import Finder from './Finder.astro';
+import ProductCard from './ProductCard.astro';
+import Segmented from './Segmented.astro';
+import { PLATFORMS, featuredProducts, products, reportFixUrl } from '../lib/products';
+
+const platformOptions = [
+	{ value: '', label: 'All' },
+	...PLATFORMS.map((platform) => ({ value: platform, label: platform })),
+];
+---
+
+<div class="home not-content">
+	<Finder />
+
+	{
+		featuredProducts.length > 0 && (
+			<section aria-labelledby="popular-heading">
+				<h2 id="popular-heading">Popular</h2>
+				<ul class="featured" role="list">
+					{featuredProducts.map((product) => (
+						<li>
+							<ProductCard product={product} variant="feature" />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	<section aria-labelledby="all-heading" data-catalog>
+		<div class="catalog-head">
+			<h2 id="all-heading">
+				All products <span class="it-meta" aria-live="polite" data-count>{products.length}</span>
+			</h2>
+			<Segmented label="Filter by platform" options={platformOptions} />
+		</div>
+		<ul class="tiles" role="list">
+			{
+				products.map((product) => (
+					<li data-platforms={product.platforms.join(' ')}>
+						<ProductCard product={product} />
+					</li>
+				))
+			}
+		</ul>
+		<p class="none" data-none hidden>Nothing for this platform yet.</p>
+	</section>
+
+	<aside class="contribute" aria-labelledby="contribute-heading">
+		<div>
+			<h2 id="contribute-heading">Know a fix that isn't here?</h2>
+			<p>Write it up once and save the next person an evening of digging through Discord.</p>
+		</div>
+		<div class="contribute-actions">
+			<a class="it-action" data-variant="primary" href="/contributing/">Write a guide</a>
+			<a class="it-action" href={reportFixUrl()}>Report a fix</a>
+		</div>
+	</aside>
+</div>
+
+<script>
+	for (const catalog of document.querySelectorAll<HTMLElement>('[data-catalog]')) {
+		const items = [...catalog.querySelectorAll<HTMLElement>('li[data-platforms]')];
+		const count = catalog.querySelector<HTMLElement>('[data-count]')!;
+		const none = catalog.querySelector<HTMLElement>('[data-none]')!;
+
+		catalog.addEventListener('segmentchange', (event) => {
+			const platform = (event as CustomEvent<string>).detail;
+			let shown = 0;
+			for (const item of items) {
+				item.hidden = Boolean(platform) && !item.dataset.platforms!.split(' ').includes(platform);
+				if (!item.hidden) shown++;
+			}
+			count.textContent = String(shown);
+			none.hidden = shown > 0;
+		});
+	}
+</script>
+
+<style>
+	.home {
+		display: flex;
+		flex-direction: column;
+		gap: clamp(3rem, 6vw, 4.5rem);
+		padding-bottom: 1rem;
+	}
+
+	h2 {
+		margin: 0 0 1.125rem;
+		font-size: var(--sl-text-lg);
+		font-weight: 600;
+		letter-spacing: -0.015em;
+		color: var(--sl-color-white);
+	}
+	h2 .it-meta {
+		margin-inline-start: 0.375rem;
+		font-weight: 400;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	li {
+		display: grid;
+		min-inline-size: 0;
+	}
+	li[hidden] {
+		display: none;
+	}
+
+	.featured {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+	}
+	@media (min-width: 50rem) {
+		.featured {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 1rem;
+		}
+	}
+
+	.catalog-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1.5rem;
+		margin-bottom: 1rem;
+	}
+	.catalog-head h2 {
+		margin: 0;
+	}
+	.tiles {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr));
+		gap: 0.25rem 0.75rem;
+		margin-inline: -0.5rem;
+	}
+	.none {
+		margin: 0;
+		padding: 2rem 0;
+		color: var(--sl-color-gray-3);
+	}
+
+	.contribute {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.25rem 2rem;
+		padding: 1.75rem;
+		border-radius: var(--it-radius-lg);
+		background: var(--it-surface);
+		box-shadow: var(--it-shadow);
+	}
+	.contribute h2 {
+		margin-bottom: 0.25rem;
+	}
+	.contribute p {
+		margin: 0;
+		max-inline-size: 30rem;
+		color: var(--sl-color-gray-2);
+		text-wrap: pretty;
+	}
+	.contribute-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+</style>

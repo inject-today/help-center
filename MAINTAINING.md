@@ -22,13 +22,14 @@ Before approving, open every link listed under **External links added** in the c
 
 ## Adding or changing a product
 
-Edit `src/data/products.json`, run `npm run sync`, and open a pull request. Fields:
+Edit `src/data/products.json`, run `npm run assets` (fetches the logo and a screenshot from WEAO into `src/assets/products/<slug>/`) and `npm run sync`, then open a pull request. Products without a WEAO logo get a letter tile. To use a different logo, replace `logo.webp` in its folder. Fields:
 
 - `name`, `slug` (the URL, lowercase with dashes), `kind` (`executor` or `external`), `platforms` (`Windows`, `Mac`, `Android`, `iOS`)
 - `links.website`, `links.discord`: official links only.
 - `featured`: a number puts the product in the home page's **Popular** grid at that position; leave it out to not feature it.
 - `status`: `active`, `updating` or `down`. See the to-do below.
-- `weaoIds`: the product's tracker IDs on WEAO, used for status later.
+- `weaoIds`: the product's tracker IDs on WEAO, used for logos now and status later.
+- `logoFit` and `color` are set by `npm run assets`: whether the logo fills its tile, and the brand color its glow uses. Edit `color` by hand if the picked one looks off.
 
 ## To do
 

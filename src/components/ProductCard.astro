@@ -1,104 +1,195 @@
 ---
-import ProductMark from './ProductMark.astro';
+import ProductIcon from './ProductIcon.astro';
 import StatusBadge from './StatusBadge.astro';
-import { kindLabel, platformsLabel, productHref, type Product } from '../lib/products';
+import { kindLabel, platformsLabel, productHref, tintFor, type Product } from '../lib/products';
 
 interface Props {
 	product: Product;
-	/** `feature`: large card for the featured grid. `row`: compact list row. */
-	variant?: 'feature' | 'row';
+	/** `feature`: large card for the Popular grid. `tile`: compact entry in the full list. */
+	variant?: 'feature' | 'tile';
 }
 
-const { product, variant = 'row' } = Astro.props;
+const { product, variant = 'tile' } = Astro.props;
 ---
 
-<a class:list={['card', variant]} href={productHref(product)}>
-	<ProductMark product={product} size={variant === 'feature' ? 'md' : 'sm'} />
-	<span class="text">
-		<span class="name">{product.name}</span>
-		<span class="meta">
-			{platformsLabel(product)}{variant === 'feature' && ` · ${kindLabel[product.kind]}`}
-		</span>
-	</span>
-	<StatusBadge status={product.status} compact={variant === 'row'} />
-</a>
+{
+	variant === 'feature' ? (
+		<a class="feature" href={productHref(product)} style={`--tint: ${tintFor(product)}`}>
+			<span class="art">
+				<ProductIcon product={product} size={56} tinted loading="eager" />
+				<StatusBadge status={product.status} />
+			</span>
+			<span class="body">
+				<span class="name">{product.name}</span>
+				<span class="it-meta">
+					{platformsLabel(product)} · {kindLabel[product.kind]}
+				</span>
+			</span>
+		</a>
+	) : (
+		<a class="tile" href={productHref(product)}>
+			<ProductIcon product={product} size={40} />
+			<span class="text">
+				<span class="name">{product.name}</span>
+				<span class="it-meta">{platformsLabel(product)}</span>
+			</span>
+			{product.status !== 'active' && <StatusBadge status={product.status} />}
+		</a>
+	)
+}
 
 <style>
-	.card {
+	a {
+		color: var(--sl-color-white);
+		text-decoration: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+	a:focus-visible {
+		outline: 2px solid var(--sl-color-white);
+		outline-offset: 3px;
+	}
+	.name {
+		overflow: hidden;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	/* Feature card: the product's color lights the top of the card. */
+	.feature {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		border-radius: var(--it-radius-lg);
+		background: var(--it-surface);
+		box-shadow: var(--it-shadow);
+		overflow: hidden;
+		isolation: isolate;
+		transition:
+			box-shadow 200ms var(--it-ease-out),
+			transform 160ms var(--it-ease-out);
+	}
+	.feature::before,
+	.feature::after {
+		content: '';
+		position: absolute;
+		inset: 0 0 auto;
+		block-size: 8.5rem;
+		z-index: -1;
+		pointer-events: none;
+	}
+	.feature::before {
+		background: radial-gradient(
+			90% 100% at 50% 0%,
+			color-mix(in oklab, var(--tint) 30%, transparent),
+			transparent 72%
+		);
+	}
+	/* A brighter copy of the light, faded in on hover; opacity is cheap to animate. */
+	.feature::after {
+		background: radial-gradient(
+			90% 100% at 50% 0%,
+			color-mix(in oklab, var(--tint) 48%, transparent),
+			transparent 72%
+		);
+		opacity: 0;
+		transition: opacity 250ms ease;
+	}
+	.feature:active {
+		transform: scale(0.98);
+	}
+	.art {
+		position: relative;
+		display: grid;
+		place-items: center;
+		block-size: 7rem;
+	}
+	.art :global(.status) {
+		position: absolute;
+		inset-block-start: 0.875rem;
+		inset-inline-end: 0.875rem;
+	}
+	.art :global(.icon) {
+		transition: transform 250ms var(--it-ease-out);
+	}
+	.body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+		padding: 0 1rem 1rem;
+		min-inline-size: 0;
+	}
+	.feature .name {
+		font-size: var(--sl-text-base);
+	}
+	.body .it-meta {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	@media (hover: hover) and (pointer: fine) {
+		.feature:hover {
+			box-shadow: var(--it-shadow-lift);
+		}
+		.feature:hover::after {
+			opacity: 1;
+		}
+		.feature:hover .art :global(.icon) {
+			transform: translateY(-3px);
+		}
+	}
+
+	/* Tile: one row in the full list. */
+	.tile {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
+		padding: 0.5rem 0.625rem 0.5rem 0.5rem;
+		border-radius: var(--it-radius);
 		min-inline-size: 0;
-		border-radius: 0.75rem;
-		color: var(--sl-color-white);
-		text-decoration: none;
 		transition:
 			background-color 150ms ease,
-			border-color 150ms ease,
 			transform 160ms var(--it-ease-out);
-		-webkit-tap-highlight-color: transparent;
 	}
-	.card:active {
+	.tile:active {
 		transform: scale(0.98);
 	}
-	.card:focus-visible {
-		outline: 2px solid var(--sl-color-accent);
-		outline-offset: 2px;
-	}
-
-	.feature {
-		flex-wrap: wrap;
-		align-items: flex-start;
-		padding: 1rem;
-		border: 1px solid var(--sl-color-hairline-light);
-		background: var(--sl-color-bg);
-	}
-	.feature .text {
-		order: 3;
-		flex-basis: 100%;
-		margin-top: 0.25rem;
-	}
-	.feature :global(.status) {
+	.tile :global(.status) {
 		margin-inline-start: auto;
 	}
-	.feature .name {
-		font-size: var(--sl-text-lg);
-	}
-
-	.row {
-		padding: 0.5rem 0.75rem 0.5rem 0.5rem;
-	}
-	.row :global(.status) {
-		margin-inline-start: auto;
-	}
-
-	@media (hover: hover) and (pointer: fine) {
-		.feature:hover {
-			border-color: var(--sl-color-gray-4);
-			background: var(--sl-color-gray-6);
-		}
-		.row:hover {
-			background: var(--sl-color-gray-6);
-		}
-	}
-
 	.text {
 		display: flex;
 		flex-direction: column;
+		gap: 0.125rem;
 		min-inline-size: 0;
 	}
-	.name {
-		font-weight: 600;
-		line-height: 1.3;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+	@media (hover: hover) and (pointer: fine) {
+		.tile:hover {
+			background: var(--sl-color-gray-6);
+		}
 	}
-	.meta {
-		font-size: var(--sl-text-xs);
-		color: var(--sl-color-gray-3);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+
+	:global([data-theme='light']) .feature::before {
+		background: radial-gradient(
+			90% 100% at 50% 0%,
+			color-mix(in oklab, var(--tint) 20%, transparent),
+			transparent 72%
+		);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.feature,
+		.tile,
+		.art :global(.icon) {
+			transition: none;
+		}
+		.feature:active,
+		.tile:active {
+			transform: none;
+		}
+		.feature:hover .art :global(.icon) {
+			transform: none;
+		}
 	}
 </style>

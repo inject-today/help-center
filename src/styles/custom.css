@@ -1,49 +1,332 @@
+/*
+ * Inject.Today design tokens and Starlight overrides.
+ * Neutral chrome with one cool gray family; color comes from product logos
+ * and from status. Dark is the default theme, light mirrors it.
+ */
+
 :root {
-	/* Strong ease-out: responds instantly, settles softly. */
+	--sl-font: 'Geist Variable';
+	--sl-font-mono: 'Geist Mono Variable';
+
 	--it-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+	--it-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+	--it-radius-lg: 1.25rem;
+	--it-radius: 0.875rem;
+	--it-radius-sm: 0.625rem;
+
+	/* Status: the only saturated colors in the chrome. */
+	--it-ok: hsl(146 58% 50%);
+	--it-warn: hsl(38 92% 57%);
+	--it-bad: hsl(356 78% 62%);
+
+	--sl-color-white: hsl(228 16% 96%);
+	--sl-color-gray-1: hsl(228 10% 86%);
+	--sl-color-gray-2: hsl(228 7% 70%);
+	--sl-color-gray-3: hsl(228 6% 54%);
+	--sl-color-gray-4: hsl(228 6% 38%);
+	--sl-color-gray-5: hsl(228 8% 21%);
+	--sl-color-gray-6: hsl(228 10% 12.5%);
+	--sl-color-black: hsl(228 12% 7%);
+
+	--sl-color-accent-low: hsl(228 10% 17%);
+	--sl-color-accent: hsl(228 16% 92%);
+	--sl-color-accent-high: hsl(0 0% 100%);
+	--sl-color-text-accent: var(--sl-color-white);
+	--sl-color-text-invert: hsl(228 12% 9%);
+
+	--sl-color-bg-nav: hsl(228 12% 7% / 0.72);
+	--sl-color-bg-sidebar: var(--sl-color-black);
+	--sl-color-bg-inline-code: hsl(228 10% 14%);
+	--sl-color-hairline-light: hsl(228 9% 16%);
+	--sl-color-hairline: hsl(228 10% 12%);
+	--sl-color-hairline-shade: hsl(228 12% 5%);
+
+	--it-surface: hsl(228 11% 10%);
+	--it-surface-raised: hsl(228 10% 13%);
+	--it-edge: hsl(0 0% 100% / 0.06);
+	--it-edge-strong: hsl(0 0% 100% / 0.11);
+	/* Light comes from above: a bright top edge, a soft tinted shadow below. */
+	--it-shadow:
+		inset 0 1px 0 hsl(0 0% 100% / 0.05),
+		0 1px 2px hsl(228 40% 2% / 0.4),
+		0 12px 32px -16px hsl(228 40% 2% / 0.7);
+	--it-shadow-lift:
+		inset 0 1px 0 hsl(0 0% 100% / 0.07),
+		0 2px 4px hsl(228 40% 2% / 0.4),
+		0 20px 40px -18px hsl(228 40% 2% / 0.85);
+
+	--sl-text-h1: clamp(2rem, 1.6rem + 1.6vw, 2.625rem);
+	--sl-text-h2: 1.625rem;
+	--sl-text-h3: 1.25rem;
+	--sl-text-h4: 1.0625rem;
+	--sl-line-height: 1.7;
+	--sl-line-height-headings: 1.15;
+	--sl-content-width: 46rem;
 }
 
-/* The home page's headline and product picker read as one block. */
-.content-panel:has(.home-title) + .content-panel {
-	border-top: 0;
-	padding-top: 0;
+:root[data-theme='light'] {
+	--it-ok: hsl(146 64% 36%);
+	--it-warn: hsl(32 90% 44%);
+	--it-bad: hsl(356 70% 48%);
+
+	--sl-color-white: hsl(228 18% 9%);
+	--sl-color-gray-1: hsl(228 12% 17%);
+	--sl-color-gray-2: hsl(228 8% 29%);
+	--sl-color-gray-3: hsl(228 6% 44%);
+	--sl-color-gray-4: hsl(228 6% 62%);
+	--sl-color-gray-5: hsl(228 10% 86%);
+	--sl-color-gray-6: hsl(228 16% 94.5%);
+	--sl-color-gray-7: hsl(228 18% 97%);
+	--sl-color-black: hsl(228 25% 98.6%);
+
+	--sl-color-accent-low: hsl(228 14% 91%);
+	--sl-color-accent: hsl(228 18% 12%);
+	--sl-color-accent-high: hsl(228 18% 6%);
+	--sl-color-text-accent: var(--sl-color-white);
+	--sl-color-text-invert: hsl(0 0% 100%);
+
+	--sl-color-bg-nav: hsl(228 25% 98.6% / 0.75);
+	--sl-color-bg-inline-code: hsl(228 16% 93%);
+	--sl-color-hairline-light: hsl(228 12% 88%);
+	--sl-color-hairline: hsl(228 14% 92%);
+	--sl-color-hairline-shade: hsl(228 12% 86%);
+
+	--it-surface: hsl(0 0% 100%);
+	--it-surface-raised: hsl(0 0% 100%);
+	--it-edge: hsl(228 20% 20% / 0.08);
+	--it-edge-strong: hsl(228 20% 20% / 0.14);
+	--it-shadow:
+		0 1px 2px hsl(228 30% 30% / 0.06),
+		0 12px 28px -18px hsl(228 30% 30% / 0.22);
+	--it-shadow-lift:
+		0 2px 4px hsl(228 30% 30% / 0.07),
+		0 22px 40px -20px hsl(228 30% 30% / 0.3);
 }
 
-/* Buttons and button-like links used outside Markdown content. */
+/* ---------- Base ---------- */
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+::selection {
+	background: color-mix(in oklab, var(--sl-color-white) 22%, transparent);
+}
+
+:focus-visible {
+	outline-color: var(--sl-color-white);
+}
+
+/* ---------- Header: a translucent layer content scrolls under ---------- */
+
+.header {
+	background-color: var(--sl-color-bg-nav);
+	-webkit-backdrop-filter: blur(16px) saturate(150%);
+	backdrop-filter: blur(16px) saturate(150%);
+	border-bottom-color: var(--it-edge);
+}
+
+site-search button[data-open-modal] {
+	border-radius: var(--it-radius-sm);
+	transition:
+		border-color 150ms ease,
+		color 150ms ease;
+}
+@media (min-width: 50rem) {
+	site-search button[data-open-modal] {
+		border-color: var(--it-edge-strong);
+		background-color: color-mix(in oklab, var(--sl-color-gray-6) 70%, transparent);
+	}
+	site-search button[data-open-modal]:hover {
+		border-color: var(--sl-color-gray-4);
+	}
+}
+
+@media (prefers-reduced-transparency: reduce) {
+	.header {
+		background-color: var(--sl-color-black);
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar-pane {
+	border-inline-end-color: var(--it-edge);
+}
+
+.sidebar-content a {
+	border-radius: var(--it-radius-sm);
+	transition:
+		background-color 150ms ease,
+		color 150ms ease;
+}
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+	color: var(--sl-color-white);
+	background-color: var(--sl-color-gray-6);
+	box-shadow: inset 0 0 0 1px var(--it-edge);
+}
+@media (hover: hover) and (pointer: fine) {
+	.sidebar-content a:not([aria-current='page']):hover {
+		background-color: color-mix(in oklab, var(--sl-color-gray-6) 60%, transparent);
+	}
+}
+
+/* ---------- Content typography ---------- */
+
+.sl-markdown-content :is(h1, h2, h3, h4) {
+	text-wrap: balance;
+}
+.sl-markdown-content h2 {
+	letter-spacing: -0.02em;
+}
+.sl-markdown-content h3 {
+	letter-spacing: -0.012em;
+}
+.sl-markdown-content :is(p, li) {
+	text-wrap: pretty;
+}
+.sl-markdown-content a:not(:where(.not-content *)) {
+	color: var(--sl-color-white);
+	text-decoration-color: color-mix(in oklab, var(--sl-color-white) 35%, transparent);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.22em;
+	transition: text-decoration-color 150ms ease;
+}
+.sl-markdown-content a:not(:where(.not-content *)):hover {
+	text-decoration-color: currentColor;
+}
+.sl-markdown-content code:not(:where(.not-content *, pre *)) {
+	padding: 0.125em 0.375em;
+	border-radius: 0.375rem;
+	box-shadow: inset 0 0 0 1px var(--it-edge);
+	font-size: 0.875em;
+}
+.sl-markdown-content strong {
+	color: var(--sl-color-white);
+	font-weight: 600;
+}
+
+/* Headings inside the title area keep Starlight's id but get our tracking. */
+h1#_top {
+	letter-spacing: -0.03em;
+	font-weight: 650;
+}
+
+/* ---------- Previous / next ---------- */
+
+.pagination-links a {
+	border: 0;
+	border-radius: var(--it-radius);
+	background: var(--it-surface);
+	box-shadow: var(--it-shadow);
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+	transition:
+		box-shadow 200ms var(--it-ease-out),
+		transform 160ms var(--it-ease-out);
+}
+.pagination-links a:active {
+	transform: scale(0.98);
+}
+.pagination-links .link-title {
+	font-size: var(--sl-text-base);
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	color: var(--sl-color-white);
+}
+@media (hover: hover) and (pointer: fine) {
+	.pagination-links a:hover {
+		box-shadow: var(--it-shadow-lift);
+	}
+}
+
+/* ---------- Shared controls ---------- */
+
 .it-action {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	block-size: 2.25rem;
-	padding: 0 0.875rem;
-	border: 1px solid var(--sl-color-gray-5);
-	border-radius: 0.625rem;
+	gap: 0.4375rem;
+	block-size: 2.375rem;
+	padding: 0 0.9375rem;
+	border: 0;
+	border-radius: var(--it-radius-sm);
 	font: inherit;
 	font-size: var(--sl-text-sm);
-	font-weight: 500;
+	font-weight: 550;
 	color: var(--sl-color-white);
-	background: transparent;
+	background: var(--it-surface-raised);
+	box-shadow: inset 0 0 0 1px var(--it-edge-strong);
 	text-decoration: none;
+	white-space: nowrap;
 	cursor: pointer;
 	transition:
 		background-color 150ms ease,
+		box-shadow 150ms ease,
 		transform 160ms var(--it-ease-out);
 	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+}
+.it-action svg {
+	flex-shrink: 0;
+	color: var(--sl-color-gray-3);
 }
 .it-action:active {
 	transform: scale(0.97);
 }
 .it-action:focus-visible {
-	outline: 2px solid var(--sl-color-accent);
+	outline: 2px solid var(--sl-color-white);
 	outline-offset: 2px;
 }
 .it-action[data-variant='primary'] {
-	border-color: transparent;
-	color: var(--sl-color-black);
+	color: var(--sl-color-text-invert);
 	background: var(--sl-color-white);
+	box-shadow: none;
+}
+.it-action[data-variant='primary'] svg {
+	color: currentColor;
 }
 @media (hover: hover) and (pointer: fine) {
 	.it-action:not([data-variant='primary']):hover {
-		background: var(--sl-color-gray-6);
+		box-shadow: inset 0 0 0 1px var(--sl-color-gray-4);
+	}
+	.it-action[data-variant='primary']:hover {
+		background: var(--sl-color-gray-1);
+	}
+}
+
+/* Small mono label for metadata: platforms, versions, counts. */
+.it-meta {
+	font-family: var(--__sl-font-mono);
+	font-size: 0.75rem;
+	letter-spacing: 0.01em;
+	color: var(--sl-color-gray-3);
+	font-variant-numeric: tabular-nums;
+}
+
+/* The home page's headline and product finder read as one block. */
+.content-panel:has(.home-hero) + .content-panel {
+	border-top: 0;
+	padding-top: 0;
+}
+.content-panel:has(.product-hero) + .content-panel {
+	border-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.it-action,
+	.pagination-links a {
+		transition: background-color 150ms ease;
+	}
+	.it-action:active,
+	.pagination-links a:active {
+		transform: none;
 	}
 }
