@@ -1,8 +1,9 @@
 ---
-// Product pages get their mark, status and platforms next to the title;
-// guides get a breadcrumb back to their product and their freshness info.
+// The title area of every page. The home page gets the headline, a product's
+// overview gets its icon, status and official links, and a guide gets a
+// breadcrumb back to its product plus when the fix was last checked.
 import Default from '@astrojs/starlight/components/PageTitle.astro';
-import ProductMark from '../ProductMark.astro';
+import ProductIcon from '../ProductIcon.astro';
 import StatusBadge from '../StatusBadge.astro';
 import { formatDate } from '../../lib/guides';
 import {
@@ -11,6 +12,8 @@ import {
 	platformsLabel,
 	productForId,
 	productHref,
+	products,
+	tintFor,
 } from '../../lib/products';
 
 // Same id as Starlight's own title, which the skip link and table of contents point at.
@@ -21,45 +24,91 @@ const product = productForId(id);
 const isHome = id === '';
 const isOverview = product !== undefined && id === product.slug;
 const { appliesTo, verifiedOn, category } = entry.data;
+
+const officialLinks = product
+	? [
+			{ label: 'Website', href: product.links.website },
+			{ label: 'Discord', href: product.links.discord },
+		].filter((link) => link.href)
+	: [];
 ---
 
 {
 	isHome ? (
-		<h1 id={TITLE_ID} class="home-title">
-			{entry.data.title}
-		</h1>
+		<div class="home-hero">
+			<h1 id={TITLE_ID}>
+				Community-driven help <span>for all things Roblox.</span>
+			</h1>
+			<p>
+				Fixes for {products.length} executors and tools, written by the people who ran into the same
+				problems first.
+			</p>
+		</div>
 	) : isOverview ? (
-		<div class="overview-title">
-			<ProductMark product={product} size="lg" />
-			<div>
+		<header class="product-hero" style={`--tint: ${tintFor(product)}`}>
+			<ProductIcon product={product} size={76} tinted loading="eager" />
+			<div class="product-hero-text">
 				<h1 id={TITLE_ID}>{product.name}</h1>
-				<p class="overview-meta">
+				<p class="product-hero-meta">
 					<StatusBadge status={product.status} />
-					<span>
+					<span class="it-meta">
 						{platformsLabel(product)} · {kindLabel[product.kind]}
 					</span>
 				</p>
 			</div>
-		</div>
+			{officialLinks.length > 0 && (
+				<div class="product-hero-links">
+					{officialLinks.map(({ label, href }) => (
+						<a class="it-action" href={href} target="_blank" rel="noopener noreferrer nofollow">
+							{label}
+							<svg aria-hidden="true" viewBox="0 0 16 16" width="12" height="12">
+								<path
+									fill="none"
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="1.6"
+									d="M5.5 3.5h7v7M12 4l-8 8"
+								/>
+							</svg>
+							<span class="sr-only">(official, opens in a new tab)</span>
+						</a>
+					))}
+				</div>
+			)}
+		</header>
 	) : product ? (
-		<>
+		<div class="guide-title">
 			<nav class="crumbs" aria-label="Breadcrumb">
-				<a href={productHref(product)}>{product.name}</a>
-				<span aria-hidden="true">/</span>
+				<a href={productHref(product)}>
+					<ProductIcon product={product} size={20} loading="eager" />
+					{product.name}
+				</a>
+				<svg aria-hidden="true" viewBox="0 0 16 16" width="12" height="12">
+					<path
+						fill="none"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.6"
+						d="m6 3.5 4.5 4.5L6 12.5"
+					/>
+				</svg>
 				<span>{categoryFor(category).label}</span>
 			</nav>
 			<h1 id={TITLE_ID}>{entry.data.title}</h1>
 			{(appliesTo || verifiedOn) && (
-				<p class="guide-meta">
+				<p class="guide-meta it-meta">
 					{appliesTo && <span>Applies to {appliesTo}</span>}
 					{verifiedOn && (
 						<span>
-							Verified <time datetime={verifiedOn.toISOString().slice(0, 10)}>{formatDate(verifiedOn)}</time>
+							Verified{' '}
+							<time datetime={verifiedOn.toISOString().slice(0, 10)}>{formatDate(verifiedOn)}</time>
 						</span>
 					)}
 				</p>
 			)}
-		</>
+		</div>
 	) : (
 		<Default />
 	)
@@ -67,68 +116,127 @@ const { appliesTo, verifiedOn, category } = entry.data;
 
 <style>
 	h1 {
-		margin-top: 1rem;
-		font-size: var(--sl-text-h1);
-		line-height: var(--sl-line-height-headings);
-		font-weight: 600;
+		margin: 0;
 		color: var(--sl-color-white);
+		font-size: var(--sl-text-h1);
+		font-weight: 650;
+		line-height: var(--sl-line-height-headings);
+		letter-spacing: -0.03em;
 		text-wrap: balance;
 	}
 
-	.home-title {
-		margin-top: clamp(1rem, 6vh, 4rem);
-		max-inline-size: 24ch;
-		font-size: clamp(2.25rem, 1.4rem + 3.6vw, 3.75rem);
-		font-weight: 700;
-		line-height: 1.05;
-		letter-spacing: -0.03em;
+	/* Home */
+	.home-hero {
+		padding-block: clamp(2rem, 7vh, 4.5rem) 0.5rem;
+	}
+	.home-hero h1 {
+		max-inline-size: 13em;
+		font-size: clamp(2.5rem, 1.5rem + 4.2vw, 4.5rem);
+		font-weight: 680;
+		line-height: 1.02;
+		letter-spacing: -0.045em;
+	}
+	.home-hero h1 span {
+		color: var(--sl-color-gray-3);
+	}
+	.home-hero p {
+		margin: 1.25rem 0 2rem;
+		max-inline-size: 34rem;
+		font-size: var(--sl-text-lg);
+		line-height: 1.55;
+		color: var(--sl-color-gray-2);
+		text-wrap: pretty;
 	}
 
-	.overview-title {
-		display: flex;
+	/* Product overview */
+	.product-hero {
+		position: relative;
+		isolation: isolate;
+		display: grid;
+		grid-template-columns: auto 1fr;
 		align-items: center;
-		gap: 1rem;
-		margin-top: 1rem;
+		gap: 1rem 1.25rem;
+		padding-block: 1.25rem 0.5rem;
 	}
-	.overview-title h1 {
-		margin: 0;
-		letter-spacing: -0.01em;
+	/* The product's own color, as light falling on the page behind its icon.
+	   closest-side fades it out before the box's edges, so it never shows a seam. */
+	.product-hero::before {
+		content: '';
+		position: absolute;
+		inset-inline-start: -8rem;
+		inset-block-start: -8rem;
+		inline-size: 28rem;
+		block-size: 21rem;
+		z-index: -1;
+		background: radial-gradient(
+			closest-side,
+			color-mix(in oklab, var(--tint) 26%, transparent),
+			transparent
+		);
+		pointer-events: none;
 	}
-	.overview-meta {
+	:global([data-theme='light']) .product-hero::before {
+		background: radial-gradient(
+			closest-side,
+			color-mix(in oklab, var(--tint) 16%, transparent),
+			transparent
+		);
+	}
+	.product-hero-text {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		min-inline-size: 0;
+	}
+	.product-hero-meta {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 0.375rem 0.75rem;
-		margin: 0.375rem 0 0;
-		font-size: var(--sl-text-sm);
-		color: var(--sl-color-gray-3);
+		gap: 0.375rem 1rem;
+		margin: 0;
 	}
-
-	.crumbs {
+	.product-hero-links {
+		grid-column: 1 / -1;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
-		margin-top: 1rem;
+		margin-top: 0.25rem;
+	}
+
+	/* Guide */
+	.guide-title {
+		padding-top: 0.75rem;
+	}
+	.crumbs {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
 		font-size: var(--sl-text-sm);
 		color: var(--sl-color-gray-3);
 	}
 	.crumbs a {
-		color: var(--sl-color-gray-2);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--sl-color-gray-1);
+		font-weight: 550;
 		text-decoration: none;
+		transition: color 150ms ease;
 	}
-	.crumbs a:hover {
-		color: var(--sl-color-white);
+	@media (hover: hover) and (pointer: fine) {
+		.crumbs a:hover {
+			color: var(--sl-color-white);
+		}
 	}
-	.crumbs + h1 {
-		margin-top: 0.25rem;
+	.crumbs svg {
+		color: var(--sl-color-gray-4);
 	}
-
 	.guide-meta {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.25rem 1rem;
-		margin: 0.5rem 0 0;
-		font-size: var(--sl-text-sm);
-		color: var(--sl-color-gray-3);
+		gap: 0.25rem 1.25rem;
+		margin: 0.875rem 0 0;
 	}
 </style>

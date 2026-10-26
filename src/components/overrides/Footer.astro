@@ -5,53 +5,87 @@ import { repoUrl } from '../../lib/products';
 
 <Default />
 <div class="site-footer">
+	<div class="lead">
+		<span class="wordmark" aria-hidden="true">inject<span class="light"></span>today</span>
+		<p>Community-run help for Roblox executors and tools.</p>
+	</div>
 	<nav aria-label="Site">
 		<a href="/contributing/">Contributing</a>
 		<a href="/terms/">Terms</a>
 		<a href="/privacy/">Privacy</a>
 		<a href={repoUrl}>GitHub</a>
 	</nav>
-	<p>
-		Inject.Today is a community-run help center. It is not affiliated with Roblox Corporation or
-		with the developers of any product listed here.
-	</p>
-	<p>
-		Guides are written by the community and licensed under{' '}
+	<p class="fine">
+		Not affiliated with Roblox Corporation or with the developers of any product listed here. Guides
+		are written by the community and licensed under{' '}
 		<a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a>.
 	</p>
 </div>
 
 <style>
 	.site-footer {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 1rem 2rem;
+		margin-top: 2.5rem;
+		padding-top: 1.75rem;
+		border-top: 1px solid var(--it-edge);
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+	.lead {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
-		margin-top: 2rem;
-		padding-top: 1.5rem;
-		border-top: 1px solid var(--sl-color-hairline);
-		font-size: var(--sl-text-xs);
-		color: var(--sl-color-gray-3);
+		gap: 0.375rem;
+	}
+	.wordmark {
+		display: block;
+		font-weight: 650;
+		letter-spacing: -0.035em;
+		color: var(--sl-color-white);
+	}
+	.light {
+		display: inline-block;
+		inline-size: 0.28rem;
+		block-size: 0.28rem;
+		margin-inline: 0.09rem 0.07rem;
+		border-radius: 50%;
+		background: var(--it-ok);
+		vertical-align: baseline;
+	}
+	p {
+		margin: 0;
 	}
 	nav {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.25rem 1.25rem;
-		margin-bottom: 0.25rem;
-		font-size: var(--sl-text-sm);
+		align-content: flex-start;
+		gap: 0.5rem 1.25rem;
 	}
-	p {
-		margin: 0;
-		max-inline-size: 40rem;
-	}
-	a {
+	nav a {
 		color: var(--sl-color-gray-2);
 		text-decoration: none;
+		transition: color 150ms ease;
 	}
-	a:hover {
-		color: var(--sl-color-white);
+	@media (hover: hover) and (pointer: fine) {
+		nav a:hover {
+			color: var(--sl-color-white);
+		}
 	}
-	p a {
+	.fine {
+		grid-column: 1 / -1;
+		max-inline-size: 40rem;
+		font-size: var(--sl-text-xs);
+		line-height: 1.6;
+	}
+	.fine a {
+		color: inherit;
 		text-decoration: underline;
 		text-underline-offset: 0.2em;
+	}
+	@media (max-width: 40rem) {
+		.site-footer {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>

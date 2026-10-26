@@ -13,6 +13,6 @@
 	"vars": {
 		// Sites allowed to receive a sign-in token. Exact hostnames only: a wildcard
 		// like inject-today.*.workers.dev would match anyone's account.
-		"ALLOWED_DOMAINS": "inject.today, inject-today.fatasscatto.workers.dev, localhost"
+		"ALLOWED_DOMAINS": "inject.today, inject-today.injecttoday.workers.dev, localhost"
 	}
 }

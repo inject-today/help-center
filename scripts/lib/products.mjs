@@ -55,6 +55,12 @@ export function validateProducts(products) {
 		if (!STATUSES.includes(p.status)) {
 			problems.push(`${at}: "status" must be one of ${STATUSES.join(', ')}.`);
 		}
+		if (p.logoFit !== undefined && !['cover', 'contain'].includes(p.logoFit)) {
+			problems.push(`${at}: "logoFit" must be "cover" or "contain".`);
+		}
+		if (p.color !== undefined && !/^#[0-9a-f]{6}$/i.test(p.color)) {
+			problems.push(`${at}: "color" must be a hex color like #3a7bd5.`);
+		}
 		if (p.featured !== undefined) {
 			if (!Number.isInteger(p.featured) || p.featured < 1) {
 				problems.push(`${at}: "featured" must be a whole number from 1 up (its position).`);

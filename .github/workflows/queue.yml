@@ -58,7 +58,10 @@ jobs:
           URL: ${{ github.event.pull_request.html_url || github.event.issue.html_url }}
           AUTHOR: ${{ github.event.pull_request.user.login || github.event.issue.user.login }}
         run: |
-          hook="$QUEUE_HOOK"; ping=""
+          hook="$QUEUE_HOOK"; ping=""; labels="none"
+          if [ -n "$PR" ]; then
+            labels=$(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json labels --jq '[.labels[].name] | join(", ")')
+          fi
           case "$EVENT:$ACTION" in
             pull_request_target:opened|pull_request_target:reopened|pull_request_target:ready_for_review)
               [ "$DRAFT" = "true" ] && exit 0
@@ -71,7 +74,11 @@ jobs:
               esac ;;
             pull_request_target:closed)
               if [ "$MERGED" = "true" ]; then
-                hook="$PUBLIC_HOOK"; head="New on the Help Center"; color=5763719
+                # Only changes to guides are news for the public channel.
+                case "$labels" in
+                  *product/*) hook="$PUBLIC_HOOK"; head="New on the Help Center"; color=5763719 ;;
+                  *) head="Merged"; color=5763719 ;;
+                esac
               else
                 head="Closed without merging"; color=9807270
               fi ;;
@@ -83,11 +90,6 @@ jobs:
           # Discord isn't connected yet: nothing to post.
           [ -z "$hook" ] && exit 0
           [ -z "$MOD_ROLE" ] && ping=""
-
-          labels="none"
-          if [ -n "$PR" ]; then
-            labels=$(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json labels --jq '[.labels[].name] | join(", ")')
-          fi
 
           jq -n --arg ping "$ping" --arg role "$MOD_ROLE" --arg head "$head" --arg title "$TITLE" \
                 --arg url "$URL" --arg by "$AUTHOR" --arg labels "${labels:-none}" --argjson color "$color" '{
