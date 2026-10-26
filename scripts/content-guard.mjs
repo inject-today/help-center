@@ -13,6 +13,9 @@ import { appendFileSync, readFileSync, statSync } from 'node:fs';
 const base = process.argv[2] ?? 'origin/main';
 const permission = process.env.AUTHOR_PERMISSION || 'none';
 const isAdmin = ['admin', 'maintain'].includes(permission);
+// Dependabot's weekly update PRs only touch dependency files and workflows.
+const isDependabot = process.env.AUTHOR === 'dependabot[bot]';
+const DEPENDABOT_FILES = /^(package(-lock)?\.json|\.github\/workflows\/[^/]+\.ya?ml)$/;
 
 const CONTENT_DIR = 'src/content/docs/';
 const MAX_IMAGE_BYTES = 500 * 1024;
@@ -41,7 +44,7 @@ const changes = git('diff', '--name-status', '--no-renames', `${base}...HEAD`)
 
 for (const { removed, file } of changes) {
 	if (!file.startsWith(CONTENT_DIR)) {
-		if (!isAdmin) {
+		if (!isAdmin && !(isDependabot && DEPENDABOT_FILES.test(file))) {
 			fail(file, 'Only admins can change files outside src/content/docs/. A moderator will help with this part.');
 		}
 		continue;

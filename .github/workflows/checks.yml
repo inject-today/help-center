@@ -45,3 +45,5 @@ jobs:
           permission=$(gh api "repos/$GITHUB_REPOSITORY/collaborators/$AUTHOR/permission" --jq .permission 2>/dev/null || echo none)
           echo "AUTHOR_PERMISSION=$permission" >> "$GITHUB_ENV"
       - run: node scripts/content-guard.mjs "origin/$GITHUB_BASE_REF"
+        env:
+          AUTHOR: ${{ github.event.pull_request.user.login }}
