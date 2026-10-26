@@ -1,0 +1,30 @@
+name: Close stale submissions
+
+on:
+  schedule:
+    - cron: '30 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      # Only PRs waiting on the contributor are closed: 10 days quiet, then 4 more after a reminder.
+      - uses: actions/stale@v11
+        with:
+          only-pr-labels: status/changes-requested
+          days-before-pr-stale: 10
+          days-before-pr-close: 4
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
+          stale-pr-label: stale
+          stale-pr-message: >
+            This submission has been waiting on changes for 10 days. It will be closed in 4 days
+            unless it's updated. You can always reopen it later.
+          close-pr-message: >
+            Closed because it was waiting on changes for two weeks. Thanks for the effort; feel free
+            to reopen it when you have time.

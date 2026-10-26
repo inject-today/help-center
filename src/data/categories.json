@@ -1,0 +1,37 @@
+[
+	{
+		"id": "getting-started",
+		"label": "Getting started",
+		"description": "Downloading, installing and the first launch."
+	},
+	{
+		"id": "wont-open",
+		"label": "Won't open or inject",
+		"description": "Nothing happens, it closes right away, or it won't attach to Roblox."
+	},
+	{
+		"id": "errors",
+		"label": "Error messages",
+		"description": "Specific error codes and pop-ups, and what they mean."
+	},
+	{
+		"id": "crashes",
+		"label": "Crashes and freezes",
+		"description": "Roblox or the tool closes, hangs or freezes."
+	},
+	{
+		"id": "key-system",
+		"label": "Keys and licenses",
+		"description": "Key systems, checkpoints, licenses and activation."
+	},
+	{
+		"id": "antivirus",
+		"label": "Antivirus warnings",
+		"description": "Windows Defender or another antivirus flags or removes files."
+	},
+	{
+		"id": "other",
+		"label": "Other",
+		"description": "Everything that doesn't fit above."
+	}
+]

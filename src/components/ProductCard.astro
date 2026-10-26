@@ -1,0 +1,104 @@
+---
+import ProductMark from './ProductMark.astro';
+import StatusBadge from './StatusBadge.astro';
+import { kindLabel, platformsLabel, productHref, type Product } from '../lib/products';
+
+interface Props {
+	product: Product;
+	/** `feature`: large card for the featured grid. `row`: compact list row. */
+	variant?: 'feature' | 'row';
+}
+
+const { product, variant = 'row' } = Astro.props;
+---
+
+<a class:list={['card', variant]} href={productHref(product)}>
+	<ProductMark product={product} size={variant === 'feature' ? 'md' : 'sm'} />
+	<span class="text">
+		<span class="name">{product.name}</span>
+		<span class="meta">
+			{platformsLabel(product)}{variant === 'feature' && ` · ${kindLabel[product.kind]}`}
+		</span>
+	</span>
+	<StatusBadge status={product.status} compact={variant === 'row'} />
+</a>
+
+<style>
+	.card {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		min-inline-size: 0;
+		border-radius: 0.75rem;
+		color: var(--sl-color-white);
+		text-decoration: none;
+		transition:
+			background-color 150ms ease,
+			border-color 150ms ease,
+			transform 160ms var(--it-ease-out);
+		-webkit-tap-highlight-color: transparent;
+	}
+	.card:active {
+		transform: scale(0.98);
+	}
+	.card:focus-visible {
+		outline: 2px solid var(--sl-color-accent);
+		outline-offset: 2px;
+	}
+
+	.feature {
+		flex-wrap: wrap;
+		align-items: flex-start;
+		padding: 1rem;
+		border: 1px solid var(--sl-color-hairline-light);
+		background: var(--sl-color-bg);
+	}
+	.feature .text {
+		order: 3;
+		flex-basis: 100%;
+		margin-top: 0.25rem;
+	}
+	.feature :global(.status) {
+		margin-inline-start: auto;
+	}
+	.feature .name {
+		font-size: var(--sl-text-lg);
+	}
+
+	.row {
+		padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+	}
+	.row :global(.status) {
+		margin-inline-start: auto;
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.feature:hover {
+			border-color: var(--sl-color-gray-4);
+			background: var(--sl-color-gray-6);
+		}
+		.row:hover {
+			background: var(--sl-color-gray-6);
+		}
+	}
+
+	.text {
+		display: flex;
+		flex-direction: column;
+		min-inline-size: 0;
+	}
+	.name {
+		font-weight: 600;
+		line-height: 1.3;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.meta {
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+</style>

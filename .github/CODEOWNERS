@@ -1,0 +1,3 @@
+# Who must approve a change, by path. The last matching line wins.
+*                     @inject-today/admins
+/src/content/docs/    @inject-today/moderators

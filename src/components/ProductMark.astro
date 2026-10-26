@@ -1,0 +1,46 @@
+---
+// Letter mark standing in for a product logo.
+import { hueFor, monogram, type Product } from '../lib/products';
+
+interface Props {
+	product: Product;
+	size?: 'sm' | 'md' | 'lg';
+}
+
+const { product, size = 'md' } = Astro.props;
+---
+
+<span class:list={['mark', size]} style={`--hue: ${hueFor(product.slug)}`} aria-hidden="true">
+	{monogram(product.name)}
+</span>
+
+<style>
+	.mark {
+		--size: 2.25rem;
+		display: inline-grid;
+		place-items: center;
+		flex-shrink: 0;
+		inline-size: var(--size);
+		block-size: var(--size);
+		border-radius: calc(var(--size) * 0.3);
+		font-size: calc(var(--size) * 0.4);
+		font-weight: 650;
+		line-height: 1;
+		letter-spacing: -0.02em;
+		color: hsl(var(--hue) 75% 80%);
+		background: hsl(var(--hue) 40% 20%);
+		box-shadow: inset 0 0 0 1px hsl(var(--hue) 60% 70% / 0.14);
+		user-select: none;
+	}
+	.sm {
+		--size: 1.75rem;
+	}
+	.lg {
+		--size: 3.5rem;
+	}
+	:global([data-theme='light']) .mark {
+		color: hsl(var(--hue) 60% 30%);
+		background: hsl(var(--hue) 75% 93%);
+		box-shadow: inset 0 0 0 1px hsl(var(--hue) 50% 40% / 0.12);
+	}
+</style>

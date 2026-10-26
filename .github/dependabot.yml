@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # One grouped PR a week; an admin merges it once the checks pass.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dependencies:
+        patterns: ['*']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ['*']

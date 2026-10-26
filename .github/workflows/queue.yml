@@ -1,0 +1,102 @@
+name: Mod queue
+
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review, synchronize, labeled, closed]
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  queue:
+    # This job has secrets, so it must never check out or run code from the PR.
+    # It only reads PR metadata and the diff as text.
+    if: github.event_name != 'issues' || contains(github.event.issue.labels.*.name, 'fix-report')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      EVENT: ${{ github.event_name }}
+      ACTION: ${{ github.event.action }}
+    steps:
+      - name: Label by product and flag external links
+        if: github.event_name == 'pull_request_target' && contains(fromJSON('["opened","reopened","synchronize"]'), github.event.action)
+        run: |
+          for slug in $(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json files \
+              --jq '.files[].path | capture("^src/content/docs/(?<slug>[a-z0-9-]+)/").slug' | sort -u); do
+            gh label create "product/$slug" -R "$GITHUB_REPOSITORY" --color 5319e7 \
+              --description "Changes guides for $slug" 2>/dev/null || true
+            gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --add-label "product/$slug"
+          done
+
+          external=$(gh pr diff "$PR" -R "$GITHUB_REPOSITORY" \
+            | grep -E '^\+[^+]' | grep -oiE 'https?://[^ )<>"]+' \
+            | grep -viE '^https?://(www\.)?(inject\.today|github\.com/inject-today)([/?#]|$)' || true)
+          if [ -n "$external" ]; then
+            gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --add-label links/external
+          else
+            gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --remove-label links/external 2>/dev/null || true
+          fi
+
+      - name: Put it in the queue
+        if: github.event_name == 'pull_request_target' && contains(fromJSON('["opened","reopened"]'), github.event.action)
+        run: gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --add-label status/needs-review
+
+      - name: Post to Discord
+        env:
+          QUEUE_HOOK: ${{ secrets.DISCORD_QUEUE_WEBHOOK }}
+          PUBLIC_HOOK: ${{ secrets.DISCORD_PUBLIC_WEBHOOK }}
+          MOD_ROLE: ${{ vars.DISCORD_MOD_ROLE_ID }}
+          DRAFT: ${{ github.event.pull_request.draft }}
+          MERGED: ${{ github.event.pull_request.merged }}
+          LABEL: ${{ github.event.label.name }}
+          TITLE: ${{ github.event.pull_request.title || github.event.issue.title }}
+          URL: ${{ github.event.pull_request.html_url || github.event.issue.html_url }}
+          AUTHOR: ${{ github.event.pull_request.user.login || github.event.issue.user.login }}
+        run: |
+          hook="$QUEUE_HOOK"; ping=""
+          case "$EVENT:$ACTION" in
+            pull_request_target:opened|pull_request_target:reopened|pull_request_target:ready_for_review)
+              [ "$DRAFT" = "true" ] && exit 0
+              head="New submission"; color=3447003; ping="<@&$MOD_ROLE>" ;;
+            pull_request_target:labeled)
+              case "$LABEL" in
+                status/changes-requested) head="Changes requested"; color=15105570 ;;
+                status/approved)          head="Approved, ready to merge"; color=5763719 ;;
+                *) exit 0 ;;
+              esac ;;
+            pull_request_target:closed)
+              if [ "$MERGED" = "true" ]; then
+                hook="$PUBLIC_HOOK"; head="New on the Help Center"; color=5763719
+              else
+                head="Closed without merging"; color=9807270
+              fi ;;
+            issues:opened)
+              head="New fix report"; color=15844367; ping="<@&$MOD_ROLE>" ;;
+            *) exit 0 ;;
+          esac
+
+          # Discord isn't connected yet: nothing to post.
+          [ -z "$hook" ] && exit 0
+          [ -z "$MOD_ROLE" ] && ping=""
+
+          labels="none"
+          if [ -n "$PR" ]; then
+            labels=$(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json labels --jq '[.labels[].name] | join(", ")')
+          fi
+
+          jq -n --arg ping "$ping" --arg role "$MOD_ROLE" --arg head "$head" --arg title "$TITLE" \
+                --arg url "$URL" --arg by "$AUTHOR" --arg labels "${labels:-none}" --argjson color "$color" '{
+            content: $ping,
+            allowed_mentions: { roles: (if $ping == "" then [] else [$role] end) },
+            embeds: [{
+              title: ("\($head): \($title)" | .[0:256]),
+              url: $url, color: $color,
+              fields: [ {name: "By", value: $by, inline: true},
+                        {name: "Labels", value: $labels, inline: true} ]
+            }]
+          }' | curl -sfS -H 'Content-Type: application/json' -d @- "$hook"

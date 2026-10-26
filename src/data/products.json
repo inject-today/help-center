@@ -1,0 +1,458 @@
+[
+	{
+		"name": "Axis",
+		"slug": "axis",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://useaxis.cc/",
+			"discord": "https://discord.com/invite/universal"
+		},
+		"weaoIds": [
+			"WEAO4ef9k768"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Codex",
+		"slug": "codex",
+		"kind": "executor",
+		"platforms": [
+			"Android"
+		],
+		"links": {
+			"website": "https://codex.lol",
+			"discord": "https://discord.gg/codexlol"
+		},
+		"weaoIds": [
+			"WEAO765cd973"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Cosmic",
+		"slug": "cosmic",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://cosmic.best"
+		},
+		"weaoIds": [
+			"WEAOmhg67xtg"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Delta",
+		"slug": "delta",
+		"kind": "executor",
+		"platforms": [
+			"Android",
+			"iOS"
+		],
+		"links": {
+			"website": "https://deltaexploits.gg/",
+			"discord": "https://discord.gg/deltax"
+		},
+		"weaoIds": [
+			"WEAO74bee327",
+			"WEAO719ba76e"
+		],
+		"status": "active",
+		"featured": 2
+	},
+	{
+		"name": "DX9WARE V2",
+		"slug": "dx9ware-v2",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://cultofintellect.com/",
+			"discord": "https://discord.gg/coi"
+		},
+		"weaoIds": [
+			"WEAO1181f437"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Isaeva",
+		"slug": "isaeva",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://isaeva.xyz/",
+			"discord": "https://discord.gg/6xFWKd4Qcr"
+		},
+		"weaoIds": [
+			"WEAO28fj47ht"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Lumen",
+		"slug": "lumen",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://getlumen.net/",
+			"discord": "https://discord.gg/U6RKvuEBDv"
+		},
+		"weaoIds": [
+			"WEAO76ngr5y7"
+		],
+		"status": "active"
+	},
+	{
+		"name": "MacSploit",
+		"slug": "macsploit",
+		"kind": "executor",
+		"platforms": [
+			"Mac"
+		],
+		"links": {
+			"website": "https://www.raptor.fun/",
+			"discord": "https://discord.gg/macsploit"
+		},
+		"weaoIds": [
+			"WEAO10179289"
+		],
+		"status": "active",
+		"featured": 6
+	},
+	{
+		"name": "Madium",
+		"slug": "madium",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://getmadium.net/",
+			"discord": "https://discord.com/invite/olemad"
+		},
+		"weaoIds": [
+			"WEAO4a1j38nv"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Madius",
+		"slug": "madius",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://madius.dev/",
+			"discord": "https://discord.com/invite/olemad"
+		},
+		"weaoIds": [
+			"WEAO957nhh9s"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Matcha",
+		"slug": "matcha",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://matcha-latte.win/",
+			"discord": "https://discord.gg/VbJXKZmEw5"
+		},
+		"weaoIds": [
+			"WEAO7650fcf2"
+		],
+		"status": "active",
+		"featured": 5
+	},
+	{
+		"name": "Matrix Hub",
+		"slug": "matrix-hub",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://matrixhubs.shop/",
+			"discord": "https://matrixhub.xyz/discord.html"
+		},
+		"weaoIds": [
+			"WEAO6ee0e3b5"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Opiumware",
+		"slug": "opiumware",
+		"kind": "executor",
+		"platforms": [
+			"Mac"
+		],
+		"links": {
+			"website": "https://use.opiumware.today/",
+			"discord": "https://discord.gg/opiumware"
+		},
+		"weaoIds": [
+			"WEAO442fb725"
+		],
+		"status": "active",
+		"featured": 7
+	},
+	{
+		"name": "Photon",
+		"slug": "photon",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://photons.solutions/",
+			"discord": "https://discord.gg/vro"
+		},
+		"weaoIds": [
+			"WEAO6c35cab4"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Potassium",
+		"slug": "potassium",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://www.potassium.pro/",
+			"discord": "https://discord.com/invite/potassium"
+		},
+		"weaoIds": [
+			"WEAO00393718"
+		],
+		"status": "active",
+		"featured": 4
+	},
+	{
+		"name": "Real",
+		"slug": "real",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://realest.gg",
+			"discord": "https://discord.gg/projectreal"
+		},
+		"weaoIds": [
+			"WEAO4a1f93j6"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Ronin",
+		"slug": "ronin",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://getronin.xyz/",
+			"discord": "https://discord.gg/HJ7zmrjhUG"
+		},
+		"weaoIds": [
+			"WEAO622afd8b"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Serotonin",
+		"slug": "serotonin",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://www.serotonin.win/",
+			"discord": "https://discord.com/invite/serotonin"
+		},
+		"weaoIds": [
+			"WEAO30580ddb"
+		],
+		"status": "active",
+		"featured": 3
+	},
+	{
+		"name": "Severe",
+		"slug": "severe",
+		"kind": "external",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"discord": "https://discord.gg/QaheZpKzsX"
+		},
+		"weaoIds": [
+			"WEAO4ef92j18"
+		],
+		"status": "active"
+	},
+	{
+		"name": "SirHurt",
+		"slug": "sirhurt",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://sirhurt.net",
+			"discord": "https://discord.gg/CPKvWTgFdV"
+		},
+		"weaoIds": [
+			"WEAO5caeb4a7"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Solara",
+		"slug": "solara",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://getsolara.dev",
+			"discord": "https://getsolara.dev/discord"
+		},
+		"weaoIds": [
+			"WEAO1af938a2"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Synapse Z",
+		"slug": "synapse-z",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://z.synapse.do",
+			"discord": "https://discord.gg/synz"
+		},
+		"weaoIds": [
+			"WEAO228206d0"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Vega X",
+		"slug": "vega-x",
+		"kind": "executor",
+		"platforms": [
+			"Android"
+		],
+		"links": {
+			"website": "https://www.vegax.gg",
+			"discord": "https://www.vegax.gg/discord.html"
+		},
+		"weaoIds": [
+			"WEAO8c4f2b91"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Velocity",
+		"slug": "velocity",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://realvelocity.xyz/",
+			"discord": "https://discord.com/invite/velocityide"
+		},
+		"weaoIds": [
+			"WEAO4a1e0747"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Volcano",
+		"slug": "volcano",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://volcano.wtf",
+			"discord": "https://volcano.wtf/discord.html"
+		},
+		"weaoIds": [
+			"WEAO57c866d0"
+		],
+		"status": "active"
+	},
+	{
+		"name": "Volt",
+		"slug": "volt",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://voltbz.net/",
+			"discord": "https://discord.com/invite/voltbz"
+		},
+		"weaoIds": [
+			"WEAO0fc0936f"
+		],
+		"status": "active",
+		"featured": 1
+	},
+	{
+		"name": "Wave",
+		"slug": "wave",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://getwave.gg",
+			"discord": "https://discord.gg/rARhPpN7fY"
+		},
+		"weaoIds": [
+			"WEAO2c8e5827"
+		],
+		"status": "active",
+		"featured": 8
+	},
+	{
+		"name": "Xeno",
+		"slug": "xeno",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://www.xeno.now/",
+			"discord": "https://discord.gg/xe-no"
+		},
+		"weaoIds": [
+			"WEAO08b7927f"
+		],
+		"status": "active"
+	}
+]

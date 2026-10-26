@@ -1,0 +1,18 @@
+// GitHub sign-in for the guide editor at /admin.
+// Code from https://github.com/sveltia/sveltia-cms-auth (MIT, commit 33500e1).
+// Deploy: npx wrangler deploy -c workers/cms-auth/wrangler.jsonc
+// Secrets (set once): npx wrangler secret put GITHUB_CLIENT_ID -c workers/cms-auth/wrangler.jsonc
+//                     npx wrangler secret put GITHUB_CLIENT_SECRET -c workers/cms-auth/wrangler.jsonc
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "inject-today-cms-auth",
+	"main": "src/index.js",
+	"compatibility_date": "2026-10-26",
+	"workers_dev": true,
+	"preview_urls": false,
+	"vars": {
+		// Sites allowed to receive a sign-in token. Exact hostnames only: a wildcard
+		// like inject-today.*.workers.dev would match anyone's account.
+		"ALLOWED_DOMAINS": "inject.today, inject-today.fatasscatto.workers.dev, localhost"
+	}
+}

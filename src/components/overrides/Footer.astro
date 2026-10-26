@@ -1,0 +1,57 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { repoUrl } from '../../lib/products';
+---
+
+<Default />
+<div class="site-footer">
+	<nav aria-label="Site">
+		<a href="/contributing/">Contributing</a>
+		<a href="/terms/">Terms</a>
+		<a href="/privacy/">Privacy</a>
+		<a href={repoUrl}>GitHub</a>
+	</nav>
+	<p>
+		Inject.Today is a community-run help center. It is not affiliated with Roblox Corporation or
+		with the developers of any product listed here.
+	</p>
+	<p>
+		Guides are written by the community and licensed under{' '}
+		<a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a>.
+	</p>
+</div>
+
+<style>
+	.site-footer {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--sl-color-hairline);
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.25rem;
+		margin-bottom: 0.25rem;
+		font-size: var(--sl-text-sm);
+	}
+	p {
+		margin: 0;
+		max-inline-size: 40rem;
+	}
+	a {
+		color: var(--sl-color-gray-2);
+		text-decoration: none;
+	}
+	a:hover {
+		color: var(--sl-color-white);
+	}
+	p a {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+</style>

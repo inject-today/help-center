@@ -1,0 +1,24 @@
+---
+// Every product gets an overview page generated from src/data/products.json,
+// so adding a product never needs a hand-written page.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import ProductHub from '../../components/ProductHub.astro';
+import { products, type Product } from '../../lib/products';
+
+export function getStaticPaths() {
+	return products.map((product) => ({ params: { product: product.slug }, props: { product } }));
+}
+
+const { product } = Astro.props as { product: Product };
+---
+
+<StarlightPage
+	frontmatter={{
+		title: product.name,
+		description: `Fixes and guides for ${product.name}, written and checked by the community.`,
+		tableOfContents: false,
+		editUrl: false,
+	}}
+>
+	<ProductHub product={product} />
+</StarlightPage>

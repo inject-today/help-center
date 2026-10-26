@@ -1,0 +1,10 @@
+---
+// Tags a product's pages so search results can be filtered by product.
+import Default from '@astrojs/starlight/components/Head.astro';
+import { productForId } from '../../lib/products';
+
+const product = productForId(Astro.locals.starlightRoute.id);
+---
+
+<Default />
+{product && <meta data-pagefind-filter="product[content]" content={product.name} />}

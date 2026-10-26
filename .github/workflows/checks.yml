@@ -1,0 +1,47 @@
+name: Checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+# Runs the contributor's code, so it gets no secrets and a read-only token.
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Product list is valid and generated files are current
+        run: npm run sync:check
+      - name: Build the site (fails on bad frontmatter or broken links)
+        run: npm run build
+
+  content-guard:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+      - name: Look up the author's role
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          permission=$(gh api "repos/$GITHUB_REPOSITORY/collaborators/$AUTHOR/permission" --jq .permission 2>/dev/null || echo none)
+          echo "AUTHOR_PERMISSION=$permission" >> "$GITHUB_ENV"
+      - run: node scripts/content-guard.mjs "origin/$GITHUB_BASE_REF"

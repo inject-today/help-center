@@ -1,0 +1,49 @@
+:root {
+	/* Strong ease-out: responds instantly, settles softly. */
+	--it-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* The home page's headline and product picker read as one block. */
+.content-panel:has(.home-title) + .content-panel {
+	border-top: 0;
+	padding-top: 0;
+}
+
+/* Buttons and button-like links used outside Markdown content. */
+.it-action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	block-size: 2.25rem;
+	padding: 0 0.875rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.625rem;
+	font: inherit;
+	font-size: var(--sl-text-sm);
+	font-weight: 500;
+	color: var(--sl-color-white);
+	background: transparent;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		background-color 150ms ease,
+		transform 160ms var(--it-ease-out);
+	-webkit-tap-highlight-color: transparent;
+}
+.it-action:active {
+	transform: scale(0.97);
+}
+.it-action:focus-visible {
+	outline: 2px solid var(--sl-color-accent);
+	outline-offset: 2px;
+}
+.it-action[data-variant='primary'] {
+	border-color: transparent;
+	color: var(--sl-color-black);
+	background: var(--sl-color-white);
+}
+@media (hover: hover) and (pointer: fine) {
+	.it-action:not([data-variant='primary']):hover {
+		background: var(--sl-color-gray-6);
+	}
+}

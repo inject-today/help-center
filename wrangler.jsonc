@@ -1,0 +1,14 @@
+// The help center: static files from `npm run build`, served by Cloudflare.
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "inject-today",
+	"compatibility_date": "2026-10-26",
+	"assets": {
+		"directory": "./dist",
+		"not_found_handling": "404-page",
+		"html_handling": "auto-trailing-slash"
+	},
+	"workers_dev": true,
+	"preview_urls": true
+	// Going live: add  "routes": [{ "pattern": "inject.today", "custom_domain": true }]
+}
