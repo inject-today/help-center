@@ -6,12 +6,31 @@ import { categories, products } from '../../lib/products';
 
 const AUTH_URL = 'https://inject-today-cms-auth.injecttoday.workers.dev';
 
+// Every new guide starts with these sections.
+const GUIDE_TEMPLATE = `## Symptom
+
+What you see: the exact error text, what happens and when.
+
+## Cause
+
+Why it happens, if you know.
+
+## Fix
+
+1. First step.
+2. Second step.
+
+## Still not working?
+
+What to try next, or where to ask.
+`;
+
 const guideFields = [
 	{
 		label: 'Title',
 		name: 'title',
 		widget: 'string',
-		hint: 'The problem as people would search for it. Put error messages in quotes, word for word.',
+		hint: 'The problem as people would search for it. Put error messages in quotes, word for word. [Examples](/contributing/write-a-guide/#3-fill-in-the-details)',
 	},
 	{
 		label: 'One-line summary',
@@ -48,7 +67,8 @@ const guideFields = [
 		label: 'Guide',
 		name: 'body',
 		widget: 'markdown',
-		hint: 'Use the sections Symptom, Cause, Fix and Still not working?',
+		hint: "One action per step. Button names in **bold**, error text in `code`. Delete sections that don't apply. [Tips](/contributing/write-a-guide/#4-write-the-steps)",
+		default: GUIDE_TEMPLATE,
 	},
 ];
 
@@ -80,6 +100,7 @@ const config = {
 		name: product.slug,
 		label: product.name,
 		label_singular: `${product.name} guide`,
+		description: `Guides for ${product.name}. New here? Read [How to write a guide](/contributing/write-a-guide/) first.`,
 		folder: `src/content/docs/${product.slug}`,
 		create: true,
 		extension: 'md',

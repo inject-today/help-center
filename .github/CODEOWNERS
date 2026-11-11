@@ -1,3 +1,8 @@
 # Who must approve a change, by path. The last matching line wins.
-*                     @inject-today/admins
-/src/content/docs/    @inject-today/moderators
+*                                @inject-today/admins
+# Guides: moderators.
+/src/content/docs/               @inject-today/moderators
+# Site pages (home, terms, privacy, 404) and the contributing pages: admins.
+/src/content/docs/*.md           @inject-today/admins
+/src/content/docs/*.mdx          @inject-today/admins
+/src/content/docs/contributing/  @inject-today/admins

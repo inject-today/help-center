@@ -4,9 +4,6 @@ import productsData from '../data/products.json';
 
 export type Platform = 'Windows' | 'Mac' | 'Android' | 'iOS';
 export type ProductKind = 'executor' | 'external';
-// TODO(weao): every product is "active" until status comes from the WEAO API.
-// See MAINTAINING.md → "Status badges".
-export type ProductStatus = 'active' | 'updating' | 'down';
 
 export interface Product {
 	name: string;
@@ -14,9 +11,8 @@ export interface Product {
 	kind: ProductKind;
 	platforms: Platform[];
 	links: { website?: string; discord?: string };
-	/** WEAO tracker IDs, one per platform listing. */
+	/** WEAO tracker IDs, one per platform listing. Logos, screenshots and live status come from these. */
 	weaoIds: string[];
-	status: ProductStatus;
 	/** Position in the featured grid on the home page; omit to not feature. */
 	featured?: number;
 	/** `cover`: the logo fills its tile. `contain`: a mark on a dark tile. Set by `npm run assets`. */
@@ -46,12 +42,6 @@ export const PLATFORMS: Platform[] = ['Windows', 'Mac', 'Android', 'iOS'];
 export const kindLabel: Record<ProductKind, string> = {
 	executor: 'Executor',
 	external: 'External',
-};
-
-export const statusLabel: Record<ProductStatus, string> = {
-	active: 'Active',
-	updating: 'Updating',
-	down: 'Down',
 };
 
 const bySlug = new Map(products.map((p) => [p.slug, p]));

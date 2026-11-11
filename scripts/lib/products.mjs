@@ -16,9 +16,11 @@ export const RESERVED_SLUGS = [
 	'404',
 ];
 
+// Folders of site pages, not guides, inside src/content/docs/.
+export const SITE_FOLDERS = ['contributing'];
+
 export const PLATFORMS = ['Windows', 'Mac', 'Android', 'iOS'];
 export const KINDS = ['executor', 'external'];
-export const STATUSES = ['active', 'updating', 'down'];
 
 export function loadProducts() {
 	return JSON.parse(readFileSync(new URL('src/data/products.json', ROOT), 'utf8'));
@@ -52,9 +54,6 @@ export function validateProducts(products) {
 				problems.push(`${at}: unknown platform "${platform}" (use ${PLATFORMS.join(', ')}).`);
 			}
 		}
-		if (!STATUSES.includes(p.status)) {
-			problems.push(`${at}: "status" must be one of ${STATUSES.join(', ')}.`);
-		}
 		if (p.logoFit !== undefined && !['cover', 'contain'].includes(p.logoFit)) {
 			problems.push(`${at}: "logoFit" must be "cover" or "contain".`);
 		}
@@ -75,7 +74,7 @@ export function validateProducts(products) {
 	// overview pages are generated, so a hand-written index would collide.
 	if (existsSync(DOCS_DIR)) {
 		for (const entry of readdirSync(DOCS_DIR, { withFileTypes: true })) {
-			if (!entry.isDirectory()) continue;
+			if (!entry.isDirectory() || SITE_FOLDERS.includes(entry.name)) continue;
 			if (!slugs.has(entry.name)) {
 				problems.push(
 					`src/content/docs/${entry.name}/ has no matching product in src/data/products.json.`

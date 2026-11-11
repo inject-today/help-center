@@ -1,16 +1,18 @@
 ---
 import Default from '@astrojs/starlight/components/Footer.astro';
+import site from '../../data/site.json';
 import { repoUrl } from '../../lib/products';
 ---
 
 <Default />
-<div class="site-footer">
+<div class="site-footer" data-pagefind-ignore>
 	<div class="lead">
 		<span class="wordmark" aria-hidden="true">inject<span class="light"></span>today</span>
 		<p>Community-run help for Roblox executors and tools.</p>
 	</div>
 	<nav aria-label="Site">
 		<a href="/contributing/">Contributing</a>
+		<a href={site.discord}>Discord</a>
 		<a href="/terms/">Terms</a>
 		<a href="/privacy/">Privacy</a>
 		<a href={repoUrl}>GitHub</a>

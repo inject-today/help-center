@@ -9,7 +9,14 @@ type SidebarLink = Extract<SidebarEntry, { type: 'link' }>;
 
 const SITE_PAGES = [
 	{ label: 'All products', href: '/' },
-	{ label: 'Contributing', href: '/contributing/' },
+	{
+		label: 'Contributing',
+		pages: [
+			{ label: 'How to help', href: '/contributing/' },
+			{ label: 'How to write a guide', href: '/contributing/write-a-guide/' },
+			{ label: 'Moderator handbook', href: '/contributing/moderating/' },
+		],
+	},
 	{ label: 'Terms of Service', href: '/terms/' },
 	{ label: 'Privacy Policy', href: '/privacy/' },
 ];
@@ -31,7 +38,17 @@ export const onRequest = defineRouteMiddleware(async (context) => {
 	const product = productForId(route.id);
 
 	if (!product) {
-		route.sidebar = SITE_PAGES.map((page) => link(page.label, page.href, currentPath));
+		route.sidebar = SITE_PAGES.map((page) =>
+			'pages' in page
+				? {
+						type: 'group' as const,
+						label: page.label,
+						collapsed: false,
+						badge: undefined,
+						entries: page.pages.map((p) => link(p.label, p.href, currentPath)),
+					}
+				: link(page.label, page.href, currentPath)
+		);
 		route.pagination = { prev: undefined, next: undefined };
 		return;
 	}

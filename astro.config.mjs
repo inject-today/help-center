@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightLinksValidator from 'starlight-links-validator';
 import { loadProducts, validateProducts } from './scripts/lib/products.mjs';
+import site from './src/data/site.json' with { type: 'json' };
 
 const products = loadProducts();
 const problems = validateProducts(products);
@@ -18,6 +19,7 @@ export default defineConfig({
 			description: 'Community-driven help center for all things Roblox.',
 			favicon: '/favicon.svg',
 			social: [
+				{ icon: 'discord', label: 'Discord', href: site.discord },
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/inject-today/help-center' },
 			],
 			editLink: {
@@ -38,6 +40,7 @@ export default defineConfig({
 				PageTitle: './src/components/overrides/PageTitle.astro',
 				Sidebar: './src/components/overrides/Sidebar.astro',
 				Footer: './src/components/overrides/Footer.astro',
+				Search: './src/components/overrides/Search.astro',
 			},
 			plugins: [
 				starlightLinksValidator({

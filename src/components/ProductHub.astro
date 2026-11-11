@@ -1,7 +1,9 @@
 ---
-// Body of a product's overview page: its guides grouped by the kind of
-// problem they solve, then what the real product looks like.
+// Body of a product's overview page: whether it's working right now, its
+// guides grouped by the kind of problem they solve, then what the real
+// product looks like.
 import { Image } from 'astro:assets';
+import StatusPanel from './StatusPanel.astro';
 import { formatDate, guideHref, guidesByCategory } from '../lib/guides';
 import { reportFixUrl, screenshotFor, type Product } from '../lib/products';
 
@@ -16,6 +18,8 @@ const screenshot = screenshotFor(product);
 ---
 
 <div class="hub not-content">
+	<StatusPanel product={product} />
+
 	{
 		total > 0 ? (
 			<>

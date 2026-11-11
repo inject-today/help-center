@@ -1,0 +1,109 @@
+---
+// What a product's status means for someone who came here because it won't
+// work: is it them, or is it waiting on an update? Hidden when WEAO doesn't
+// list the product. The browser refreshes it from /api/status.
+import { getStatuses } from '../lib/status';
+import { statusPanelHtml } from '../lib/weao.js';
+import type { Product } from '../lib/products';
+
+interface Props {
+	product: Product;
+}
+
+const { product } = Astro.props;
+const status = (await getStatuses())[product.slug];
+---
+
+<section
+	class="status-panel"
+	aria-labelledby="status-heading"
+	data-status-panel={product.slug}
+	data-pagefind-ignore
+	data-name={product.name}
+	hidden={!status}
+>
+	<h2 id="status-heading" class="sr-only">Status</h2>
+	<div data-status-body set:html={status ? statusPanelHtml(status, product.name) : ''} />
+</section>
+
+<script>
+	import '../scripts/live-status';
+</script>
+
+<style>
+	.status-panel {
+		padding: 1.125rem 1.25rem;
+		border-radius: var(--it-radius);
+		background: var(--it-surface);
+		box-shadow: var(--it-shadow);
+	}
+	.status-panel[hidden] {
+		display: none;
+	}
+	.status-panel :global(p) {
+		margin: 0;
+	}
+	.status-panel :global(.status-summary) {
+		max-inline-size: 38rem;
+		color: var(--sl-color-gray-1);
+		text-wrap: pretty;
+	}
+	.status-panel :global(.status-risk) {
+		display: flex;
+		gap: 0.5rem;
+		margin-top: 0.625rem;
+		max-inline-size: 38rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+		text-wrap: pretty;
+	}
+	/* A small amber mark, so the warning reads as one without shouting. */
+	.status-panel :global(.status-risk)::before {
+		content: '';
+		flex-shrink: 0;
+		inline-size: 0.375rem;
+		block-size: 0.375rem;
+		margin-top: 0.5em;
+		border-radius: 50%;
+		background: var(--it-warn);
+	}
+	.status-panel :global(.status-listings) {
+		display: grid;
+		grid-template-columns: auto auto 1fr;
+		align-items: center;
+		gap: 0.5rem 1rem;
+		margin: 0.875rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.status-panel :global(.status-listings li) {
+		display: contents;
+	}
+	.status-panel :global(.status-platform) {
+		font-size: var(--sl-text-sm);
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	.status-panel :global(.status-source) {
+		margin-top: 0.875rem;
+	}
+	.status-panel :global(.status-source a) {
+		color: inherit;
+		text-decoration: underline;
+		text-decoration-color: var(--sl-color-gray-4);
+		text-underline-offset: 0.2em;
+	}
+	.status-panel :global(.status-source a:hover) {
+		color: var(--sl-color-white);
+		text-decoration-color: currentColor;
+	}
+	@media (max-width: 30rem) {
+		.status-panel :global(.status-listings) {
+			grid-template-columns: auto 1fr;
+		}
+		.status-panel :global(.status-listings .it-meta) {
+			grid-column: 1 / -1;
+			margin-top: -0.25rem;
+		}
+	}
+</style>
