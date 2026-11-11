@@ -1,0 +1,69 @@
+---
+// Starlight's search, plus a switch on a product's pages so searching starts
+// with that product's guides. "All products" searches everything.
+import Default from '@astrojs/starlight/components/Search.astro';
+import Segmented from '../Segmented.astro';
+import { productForId } from '../../lib/products';
+
+const product = productForId(Astro.locals.starlightRoute.id);
+---
+
+<Default />
+
+{
+	product && (
+		<div class="search-scope" data-search-scope={product.name} hidden>
+			<Segmented
+				label="Search in"
+				options={[
+					{ value: 'product', label: product.name },
+					{ value: 'all', label: 'All products' },
+				]}
+			/>
+		</div>
+	)
+}
+
+<script>
+	const scope = document.querySelector<HTMLElement>('[data-search-scope]');
+	const frame = document.querySelector('site-search .dialog-frame');
+	const results = document.getElementById('starlight__search');
+
+	if (scope && frame && results) {
+		const name = scope.dataset.searchScope!;
+		let onlyThisProduct = true;
+
+		// Pagefind draws a checkbox per product once it has loaded. Its panel is
+		// hidden (custom.css), and this keeps the current product's box in step
+		// with the switch. Clicking it is what tells Pagefind to search again.
+		const sync = () => {
+			const box = [...results.querySelectorAll<HTMLInputElement>('input[name="product"]')].find(
+				(input) => input.value === name
+			);
+			if (box && box.checked !== onlyThisProduct) box.click();
+		};
+
+		frame.insertBefore(scope, frame.querySelector('.search-container'));
+		scope.hidden = false;
+		scope.addEventListener('segmentchange', (event) => {
+			onlyThisProduct = (event as CustomEvent<string>).detail === 'product';
+			sync();
+		});
+		new MutationObserver(sync).observe(results, { childList: true, subtree: true });
+	}
+</script>
+
+<style>
+	.search-scope {
+		display: flex;
+	}
+	.search-scope[hidden] {
+		display: none;
+	}
+	/* Leave room for the Cancel button that sits at the top on small screens. */
+	@media (max-width: 49.99rem) {
+		.search-scope {
+			margin-inline-end: 5rem;
+		}
+	}
+</style>

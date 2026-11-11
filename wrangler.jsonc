@@ -1,13 +1,19 @@
-// The help center: static files from `npm run build`, served by Cloudflare.
+// The help center: static files from `npm run build`, served by Cloudflare,
+// plus a small Worker for live product status at /api/status.
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "inject-today",
+	"main": "workers/site/index.js",
 	"compatibility_date": "2026-10-26",
 	"assets": {
 		"directory": "./dist",
+		"binding": "ASSETS",
 		"not_found_handling": "404-page",
-		"html_handling": "auto-trailing-slash"
+		"html_handling": "auto-trailing-slash",
+		// Everything else is served straight from the files, without running the Worker.
+		"run_worker_first": ["/api/*"]
 	},
+	"observability": { "enabled": true },
 	"workers_dev": true,
 	"preview_urls": true,
 	// Pull requests get their own preview (Workers Builds runs `wrangler preview` for them).

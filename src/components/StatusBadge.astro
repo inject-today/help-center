@@ -1,40 +1,34 @@
 ---
-import { statusLabel, type ProductStatus } from '../lib/products';
+// A product's status from WEAO: a colored dot and a word. Hidden when WEAO
+// doesn't list the product. The browser refreshes it from /api/status.
+// Styles live in custom.css (.it-status), since the status panel builds the
+// same badge in the browser.
+import { getStatuses } from '../lib/status';
+import { STATE_LABEL } from '../lib/weao.js';
 
 interface Props {
-	status: ProductStatus;
+	slug: string;
+	/** Only show it when something is wrong, e.g. in a long list. */
+	quiet?: boolean;
 }
 
-const { status } = Astro.props;
+const { slug, quiet = false } = Astro.props;
+const status = (await getStatuses())[slug];
+const hidden = !status || (quiet && status.state === 'updated');
 ---
 
-<span class:list={['status', status]}>
-	<span class="dot" aria-hidden="true"></span>{statusLabel[status]}
+<span
+	class="it-status"
+	data-live-status={slug}
+	data-quiet={quiet ? '' : undefined}
+	data-state={status?.state}
+	hidden={hidden}
+>
+	<span class="it-status-dot" aria-hidden="true"></span><span data-label
+		>{status ? STATE_LABEL[status.state] : ''}</span
+	>
 </span>
 
-<style>
-	.status {
-		--tone: var(--it-ok);
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4375rem;
-		font-size: var(--sl-text-xs);
-		font-weight: 550;
-		line-height: 1;
-		color: var(--sl-color-gray-2);
-		white-space: nowrap;
-	}
-	.updating {
-		--tone: var(--it-warn);
-	}
-	.down {
-		--tone: var(--it-bad);
-	}
-	.dot {
-		inline-size: 0.4375rem;
-		block-size: 0.4375rem;
-		border-radius: 50%;
-		background: var(--tone);
-		box-shadow: 0 0 0 3px color-mix(in oklab, var(--tone) 20%, transparent);
-	}
-</style>
+<script>
+	import '../scripts/live-status';
+</script>

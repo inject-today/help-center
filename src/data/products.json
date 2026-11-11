@@ -12,8 +12,7 @@
 		},
 		"weaoIds": [
 			"WEAO4ef9k768"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "Codex",
@@ -29,7 +28,6 @@
 		"weaoIds": [
 			"WEAO765cd973"
 		],
-		"status": "active",
 		"logoFit": "cover",
 		"color": "#fa0505"
 	},
@@ -46,7 +44,6 @@
 		"weaoIds": [
 			"WEAOmhg67xtg"
 		],
-		"status": "active",
 		"logoFit": "contain"
 	},
 	{
@@ -65,7 +62,6 @@
 			"WEAO74bee327",
 			"WEAO719ba76e"
 		],
-		"status": "active",
 		"featured": 2,
 		"logoFit": "cover"
 	},
@@ -82,8 +78,7 @@
 		},
 		"weaoIds": [
 			"WEAO1181f437"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "Isaeva",
@@ -99,7 +94,6 @@
 		"weaoIds": [
 			"WEAO28fj47ht"
 		],
-		"status": "active",
 		"logoFit": "contain"
 	},
 	{
@@ -115,8 +109,7 @@
 		},
 		"weaoIds": [
 			"WEAO76ngr5y7"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "MacSploit",
@@ -132,7 +125,6 @@
 		"weaoIds": [
 			"WEAO10179289"
 		],
-		"status": "active",
 		"featured": 6
 	},
 	{
@@ -149,7 +141,6 @@
 		"weaoIds": [
 			"WEAO4a1j38nv"
 		],
-		"status": "active",
 		"logoFit": "contain"
 	},
 	{
@@ -165,8 +156,7 @@
 		},
 		"weaoIds": [
 			"WEAO957nhh9s"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "Matcha",
@@ -182,7 +172,6 @@
 		"weaoIds": [
 			"WEAO7650fcf2"
 		],
-		"status": "active",
 		"featured": 5
 	},
 	{
@@ -198,8 +187,7 @@
 		},
 		"weaoIds": [
 			"WEAO6ee0e3b5"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "Opiumware",
@@ -215,7 +203,6 @@
 		"weaoIds": [
 			"WEAO442fb725"
 		],
-		"status": "active",
 		"featured": 7,
 		"logoFit": "cover",
 		"color": "#396ec6"
@@ -233,8 +220,7 @@
 		},
 		"weaoIds": [
 			"WEAO6c35cab4"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "Potassium",
@@ -250,7 +236,6 @@
 		"weaoIds": [
 			"WEAO00393718"
 		],
-		"status": "active",
 		"featured": 4,
 		"logoFit": "cover"
 	},
@@ -268,7 +253,6 @@
 		"weaoIds": [
 			"WEAO4a1f93j6"
 		],
-		"status": "active",
 		"logoFit": "contain"
 	},
 	{
@@ -285,7 +269,6 @@
 		"weaoIds": [
 			"WEAO622afd8b"
 		],
-		"status": "active",
 		"logoFit": "cover",
 		"color": "#9379d8"
 	},
@@ -303,7 +286,6 @@
 		"weaoIds": [
 			"WEAO30580ddb"
 		],
-		"status": "active",
 		"featured": 3
 	},
 	{
@@ -318,8 +300,7 @@
 		},
 		"weaoIds": [
 			"WEAO4ef92j18"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "SirHurt",
@@ -335,7 +316,6 @@
 		"weaoIds": [
 			"WEAO5caeb4a7"
 		],
-		"status": "active",
 		"logoFit": "contain",
 		"color": "#1261ed"
 	},
@@ -353,7 +333,6 @@
 		"weaoIds": [
 			"WEAO1af938a2"
 		],
-		"status": "active",
 		"logoFit": "cover",
 		"color": "#6604fb"
 	},
@@ -370,8 +349,7 @@
 		},
 		"weaoIds": [
 			"WEAO228206d0"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "Vega X",
@@ -386,8 +364,7 @@
 		},
 		"weaoIds": [
 			"WEAO8c4f2b91"
-		],
-		"status": "active"
+		]
 	},
 	{
 		"name": "Velocity",
@@ -403,7 +380,6 @@
 		"weaoIds": [
 			"WEAO4a1e0747"
 		],
-		"status": "active",
 		"logoFit": "contain"
 	},
 	{
@@ -420,7 +396,6 @@
 		"weaoIds": [
 			"WEAO57c866d0"
 		],
-		"status": "active",
 		"logoFit": "contain",
 		"color": "#db783a"
 	},
@@ -438,7 +413,6 @@
 		"weaoIds": [
 			"WEAO0fc0936f"
 		],
-		"status": "active",
 		"featured": 1,
 		"logoFit": "contain",
 		"color": "#7e5af7"
@@ -457,7 +431,6 @@
 		"weaoIds": [
 			"WEAO2c8e5827"
 		],
-		"status": "active",
 		"featured": 8,
 		"logoFit": "cover",
 		"color": "#398fc6"
@@ -476,7 +449,6 @@
 		"weaoIds": [
 			"WEAO08b7927f"
 		],
-		"status": "active",
 		"logoFit": "cover",
 		"color": "#7997d8"
 	}

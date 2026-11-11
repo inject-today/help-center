@@ -50,7 +50,7 @@ const officialLinks = product
 			<div class="product-hero-text">
 				<h1 id={TITLE_ID}>{product.name}</h1>
 				<p class="product-hero-meta">
-					<StatusBadge status={product.status} />
+					<StatusBadge slug={product.slug} />
 					<span class="it-meta">
 						{platformsLabel(product)} · {kindLabel[product.kind]}
 					</span>

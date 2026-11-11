@@ -213,6 +213,36 @@ site-search button[data-open-modal] {
 	font-weight: 600;
 }
 
+/* Notes (:::note, :::tip, :::caution, :::danger) are quiet cards; the kind of
+   note shows in the icon's color instead of a colored slab. */
+.starlight-aside {
+	border: 0;
+	border-radius: var(--it-radius);
+	background: var(--it-surface);
+	box-shadow: var(--it-shadow);
+}
+.starlight-aside--note {
+	--sl-color-asides-text-accent: var(--sl-color-gray-2);
+}
+.starlight-aside--tip {
+	--sl-color-asides-text-accent: var(--it-ok);
+}
+.starlight-aside--caution {
+	--sl-color-asides-text-accent: var(--it-warn);
+}
+.starlight-aside--danger {
+	--sl-color-asides-text-accent: var(--it-bad);
+}
+.starlight-aside__title {
+	color: var(--sl-color-white);
+}
+.starlight-aside__icon {
+	color: var(--sl-color-asides-text-accent);
+}
+.starlight-aside__content a {
+	color: var(--sl-color-white);
+}
+
 /* Headings inside the title area keep Starlight's id but get our tracking. */
 h1#_top {
 	letter-spacing: -0.03em;
@@ -309,6 +339,45 @@ h1#_top {
 	letter-spacing: 0.01em;
 	color: var(--sl-color-gray-3);
 	font-variant-numeric: tabular-nums;
+}
+
+/* A product's status: a colored dot and a word. Built by StatusBadge.astro
+   and, in the browser, by src/lib/weao.js, so the styles live here. */
+.it-status {
+	--tone: var(--sl-color-gray-3);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4375rem;
+	font-size: var(--sl-text-xs);
+	font-weight: 550;
+	line-height: 1;
+	color: var(--sl-color-gray-2);
+	white-space: nowrap;
+}
+.it-status[hidden] {
+	display: none;
+}
+.it-status[data-state='updated'] {
+	--tone: var(--it-ok);
+}
+.it-status:is([data-state='issues'], [data-state='partial']) {
+	--tone: var(--it-warn);
+}
+.it-status[data-state='outdated'] {
+	--tone: var(--it-bad);
+}
+.it-status-dot {
+	inline-size: 0.4375rem;
+	block-size: 0.4375rem;
+	border-radius: 50%;
+	background: var(--tone);
+	box-shadow: 0 0 0 3px color-mix(in oklab, var(--tone) 20%, transparent);
+}
+
+/* Search: the product filter is set by the scope switch on product pages
+   (Search.astro), so Pagefind's own list of every product stays out of the way. */
+#starlight__search .pagefind-ui__filter-panel {
+	display: none;
 }
 
 /* The home page's headline and product finder read as one block. */

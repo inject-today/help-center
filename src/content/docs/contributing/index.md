@@ -13,62 +13,32 @@ You need a free [GitHub account](https://github.com/signup) for all three.
 
 | What you want to do | How |
 | --- | --- |
+| Write a new guide or add screenshots | Open the [guide editor](/admin/) and sign in with GitHub. [How to write a guide](/contributing/write-a-guide/) walks you through it, start to finish. |
 | Fix a typo or a wrong step | Click **Edit page** at the bottom of the guide. GitHub opens an editor, and saving sends your change for review. |
-| Write a new guide or add screenshots | Open the [guide editor](/admin/) and sign in with GitHub. Write the guide, then click **Send for review**. |
 | Tell us about a fix without writing it up | [Report a fix](https://github.com/inject-today/help-center/issues/new?template=fix-report.yml). A moderator will turn it into a guide. |
-
-## How to write a good guide
-
-Keep each guide to **one problem**. Someone searching for an error message should land on a page about exactly that error.
-
-Use this layout:
-
-```md
----
-title: "Error: The specified module could not be found"
-description: One sentence saying what this fixes.
-category: errors
-appliesTo: v2.1 and newer
-verifiedOn: 2026-10-26
----
-
-## Symptom
-
-What you see: the exact error text, what happens and when.
-
-## Cause
-
-Why it happens, if you know.
-
-## Fix
-
-1. First step.
-2. Second step.
-
-## Still not working?
-
-What to try next, or where to ask.
-```
-
-- **title**: the problem as people would search for it. Put error messages in quotes, word for word.
-- **category**: one of `getting-started`, `wont-open`, `errors`, `crashes`, `key-system`, `antivirus` or `other`.
-- **appliesTo**: the product versions the fix works on, if it matters.
-- **verifiedOn**: the last date you confirmed the fix works. Update it whenever you check it again.
 
 ## Rules every guide has to follow
 
+- **One problem per guide.** Someone searching for an error message should land on a page about exactly that error.
 - **Official downloads only.** Link to the product's official website or Discord, never to mirrors, re-uploads, cracked or "fixed" builds.
 - **No files.** Guides are text and screenshots. Never attach or link programs, archives or scripts that you host yourself.
 - **Antivirus.** Don't tell people to turn their antivirus off. If a product needs an exclusion, link the developer's own instructions and limit it to that product's folder.
 - **No private information.** Crop or blur usernames, keys, license codes, emails and anything else personal in screenshots.
 - **Screenshots** must be WebP or PNG, under 500 KB, and cropped to what matters.
 - **Credit your sources.** If you bring in a guide someone else wrote, say who wrote it and link the original.
+- **No ads.** No referral links, affiliate links, or promotion of other products or servers.
 
 ## What happens after you send it
 
-1. A moderator gets a notification and reviews your change.
-2. They might edit it, ask you to change something, or decline it with a reason.
+1. Moderators get a notification and one of them reviews your change, usually within two days.
+2. They might edit it, ask you to change something, or decline it with a reason. You'll get an email from GitHub when they do.
 3. Once it's approved, it's live on the site within a few minutes.
+
+Moderators follow the [moderator handbook](/contributing/moderating/), so you can see exactly what they check.
+
+## Questions
+
+Ask in the [Inject.Today Discord](https://discord.gg/injecttoday), or email [info@inject.today](mailto:info@inject.today).
 
 ## License
 

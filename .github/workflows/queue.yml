@@ -27,7 +27,7 @@ jobs:
         if: github.event_name == 'pull_request_target' && contains(fromJSON('["opened","reopened","synchronize"]'), github.event.action)
         run: |
           for slug in $(gh pr view "$PR" -R "$GITHUB_REPOSITORY" --json files \
-              --jq '.files[].path | capture("^src/content/docs/(?<slug>[a-z0-9-]+)/").slug' | sort -u); do
+              --jq '.files[].path | capture("^src/content/docs/(?<slug>[a-z0-9-]+)/").slug | select(. != "contributing")' | sort -u); do
             gh label create "product/$slug" -R "$GITHUB_REPOSITORY" --color 5319e7 \
               --description "Changes guides for $slug" 2>/dev/null || true
             gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --add-label "product/$slug"
@@ -45,8 +45,20 @@ jobs:
           fi
 
       - name: Put it in the queue
-        if: github.event_name == 'pull_request_target' && contains(fromJSON('["opened","reopened"]'), github.event.action)
+        if: >-
+          github.event_name == 'pull_request_target' && !github.event.pull_request.draft &&
+          contains(fromJSON('["opened","reopened","ready_for_review"]'), github.event.action)
         run: gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --add-label status/needs-review
+
+      # The contributor answered a request for changes: it's the moderators' turn again.
+      - name: Back in the queue after changes
+        if: >-
+          github.event_name == 'pull_request_target' && github.event.action == 'synchronize' &&
+          contains(github.event.pull_request.labels.*.name, 'status/changes-requested')
+        run: |
+          gh pr edit "$PR" -R "$GITHUB_REPOSITORY" \
+            --remove-label status/changes-requested --add-label status/needs-review
+          gh pr edit "$PR" -R "$GITHUB_REPOSITORY" --remove-label stale 2>/dev/null || true
 
       - name: Post to Discord
         env:
@@ -55,6 +67,7 @@ jobs:
           MOD_ROLE: ${{ vars.DISCORD_MOD_ROLE_ID }}
           DRAFT: ${{ github.event.pull_request.draft }}
           MERGED: ${{ github.event.pull_request.merged }}
+          WAS_WAITING: ${{ contains(github.event.pull_request.labels.*.name, 'status/changes-requested') }}
           LABEL: ${{ github.event.label.name }}
           TITLE: ${{ github.event.pull_request.title || github.event.issue.title }}
           URL: ${{ github.event.pull_request.html_url || github.event.issue.html_url }}
@@ -68,6 +81,9 @@ jobs:
             pull_request_target:opened|pull_request_target:reopened|pull_request_target:ready_for_review)
               [ "$DRAFT" = "true" ] && exit 0
               head="New submission"; color=3447003; ping="<@&$MOD_ROLE>" ;;
+            pull_request_target:synchronize)
+              [ "$WAS_WAITING" = "true" ] || exit 0
+              head="Updated after changes were requested"; color=3447003; ping="<@&$MOD_ROLE>" ;;
             pull_request_target:labeled)
               case "$LABEL" in
                 status/changes-requested) head="Changes requested"; color=15105570 ;;

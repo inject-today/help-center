@@ -46,10 +46,15 @@ const { label, options } = Astro.props;
 			});
 		}
 
-		// Place it before enabling the transition, so it doesn't slide in on load.
-		place();
-		requestAnimationFrame(() => group.setAttribute('data-ready', ''));
-		new ResizeObserver(place).observe(group);
+		// Only a click slides the highlight. On load, on resize, and when a hidden
+		// group (such as one in a closed dialog) appears, it jumps into place.
+		const placeNow = () => {
+			group.removeAttribute('data-ready');
+			place();
+			requestAnimationFrame(() => group.setAttribute('data-ready', ''));
+		};
+		placeNow();
+		new ResizeObserver(placeNow).observe(group);
 	}
 </script>
 

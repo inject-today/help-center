@@ -8,7 +8,32 @@
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 	</head>
 	<body>
-		<!-- The editor reads ./config.yml, which is generated from the product list at build time. -->
-		<script src="https://unpkg.com/@sveltia/cms@0.253.0/dist/sveltia-cms.js"></script>
+		<!--
+			The editor reads ./config.yml, which is generated from the product list at build time.
+			To update the editor, change the version in the URL and replace the integrity hash:
+			curl -sL <url> | openssl dgst -sha384 -binary | openssl base64 -A
+		-->
+		<script
+			src="https://unpkg.com/@sveltia/cms@0.262.4/dist/sveltia-cms.js"
+			integrity="sha384-b/9KLfUh6tGIy8p/9gBukETRzbigBU+zEjkKt0KYD876dUZZCXXnKXWGTHbg0w9D"
+			crossorigin="anonymous"
+		></script>
+		<script>
+			// Help buttons in the editor's toolbar. They open the site's own pages in a new tab.
+			CMS.registerCustomPage({
+				id: 'how-to',
+				label: 'How to write a guide',
+				icon: 'menu_book',
+				url: '/contributing/write-a-guide/',
+				newTab: true,
+			});
+			CMS.registerCustomPage({
+				id: 'moderators',
+				label: 'Moderator handbook',
+				icon: 'rule',
+				url: '/contributing/moderating/',
+				newTab: true,
+			});
+		</script>
 	</body>
 </html>

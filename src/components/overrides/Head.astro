@@ -1,10 +1,31 @@
 ---
-// Tags a product's pages so search results can be filtered by product.
+// Tags a product's pages for search, and adds the analytics beacon once a
+// token is set in src/data/site.json.
 import Default from '@astrojs/starlight/components/Head.astro';
+import site from '../../data/site.json';
 import { productForId } from '../../lib/products';
 
-const product = productForId(Astro.locals.starlightRoute.id);
+const { id, entry } = Astro.locals.starlightRoute;
+const product = productForId(id);
+const isGuide = product !== undefined && id !== product.slug;
 ---
 
 <Default />
 {product && <meta data-pagefind-filter="product[content]" content={product.name} />}
+{
+	/* Search results across products name the product, e.g. "Solara › Won't open". */
+	isGuide && (
+		<meta data-pagefind-meta="title[content]" content={`${product.name} › ${entry.data.title}`} />
+	)
+}
+{
+	/* Cloudflare Web Analytics: no cookies, no local storage, no fingerprinting. See /privacy/. */
+	import.meta.env.PROD && site.analyticsToken && (
+		<script
+			is:inline
+			defer
+			src="https://static.cloudflareinsights.com/beacon.min.js"
+			data-cf-beacon={JSON.stringify({ token: site.analyticsToken })}
+		/>
+	)
+}
