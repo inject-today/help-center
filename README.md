@@ -21,7 +21,7 @@ Read the [contributing guide](https://inject.today/contributing/) first. It cove
 | `src/data/products.json` | Every product. Product pages, sidebars, editor sections and the fix-report form are generated from it. |
 | `src/data/categories.json` | The problem types guides are grouped by. |
 | `src/data/site.json` | The Discord invite and the Cloudflare Web Analytics token. |
-| `src/assets/products/<product>/` | Each product's logo and screenshot, fetched from WEAO with `npm run assets`. |
+| `src/assets/products/<product>/` | Each product's logo and screenshot, fetched from WEAO with `npm run assets`, or added from a file with `npm run logo`. |
 | `src/content/docs/<product>/*.md` | Guides. Images go in `src/content/docs/<product>/images/`. |
 | `src/content/docs/*.md`, `src/content/docs/contributing/` | Home, Terms, Privacy and the contributing pages. |
 | `src/components/` | Home page, product pages and Starlight overrides. |
@@ -47,7 +47,7 @@ npm run dev
 ## Adding a product
 
 1. Add an entry to `src/data/products.json`, including its `weaoIds` if WEAO lists it.
-2. Run `npm run assets` to fetch its logo and screenshot, and `npm run sync` to update the fix-report form.
+2. Run `npm run assets` to fetch its logo and screenshot (or `npm run logo -- <slug> <file>` if WEAO has no logo), and `npm run sync` to update the fix-report form.
 3. Open a pull request.
 
 ## License

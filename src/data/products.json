@@ -12,7 +12,9 @@
 		},
 		"weaoIds": [
 			"WEAO4ef9k768"
-		]
+		],
+		"logoFit": "contain",
+		"color": "#5297ff"
 	},
 	{
 		"name": "Codex",
@@ -78,7 +80,9 @@
 		},
 		"weaoIds": [
 			"WEAO1181f437"
-		]
+		],
+		"logoFit": "cover",
+		"color": "#d79c28"
 	},
 	{
 		"name": "Isaeva",
@@ -109,7 +113,9 @@
 		},
 		"weaoIds": [
 			"WEAO76ngr5y7"
-		]
+		],
+		"logoFit": "contain",
+		"color": "#7995d8"
 	},
 	{
 		"name": "MacSploit",
@@ -125,7 +131,8 @@
 		"weaoIds": [
 			"WEAO10179289"
 		],
-		"featured": 6
+		"featured": 6,
+		"logoFit": "contain"
 	},
 	{
 		"name": "Madium",
@@ -156,7 +163,8 @@
 		},
 		"weaoIds": [
 			"WEAO957nhh9s"
-		]
+		],
+		"logoFit": "cover"
 	},
 	{
 		"name": "Matcha",
@@ -172,7 +180,9 @@
 		"weaoIds": [
 			"WEAO7650fcf2"
 		],
-		"featured": 5
+		"featured": 5,
+		"logoFit": "contain",
+		"color": "#d87997"
 	},
 	{
 		"name": "Matrix Hub",
@@ -187,7 +197,9 @@
 		},
 		"weaoIds": [
 			"WEAO6ee0e3b5"
-		]
+		],
+		"logoFit": "contain",
+		"color": "#54b2fc"
 	},
 	{
 		"name": "Opiumware",
@@ -220,7 +232,8 @@
 		},
 		"weaoIds": [
 			"WEAO6c35cab4"
-		]
+		],
+		"logoFit": "cover"
 	},
 	{
 		"name": "Potassium",
@@ -286,7 +299,9 @@
 		"weaoIds": [
 			"WEAO30580ddb"
 		],
-		"featured": 3
+		"featured": 3,
+		"logoFit": "contain",
+		"color": "#3ec7b9"
 	},
 	{
 		"name": "Severe",
@@ -300,7 +315,9 @@
 		},
 		"weaoIds": [
 			"WEAO4ef92j18"
-		]
+		],
+		"logoFit": "cover",
+		"color": "#f1608d"
 	},
 	{
 		"name": "SirHurt",
@@ -349,7 +366,8 @@
 		},
 		"weaoIds": [
 			"WEAO228206d0"
-		]
+		],
+		"logoFit": "contain"
 	},
 	{
 		"name": "Vega X",
