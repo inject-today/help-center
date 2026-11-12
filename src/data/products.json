@@ -370,21 +370,6 @@
 		"logoFit": "contain"
 	},
 	{
-		"name": "Vega X",
-		"slug": "vega-x",
-		"kind": "executor",
-		"platforms": [
-			"Android"
-		],
-		"links": {
-			"website": "https://www.vegax.gg",
-			"discord": "https://www.vegax.gg/discord.html"
-		},
-		"weaoIds": [
-			"WEAO8c4f2b91"
-		]
-	},
-	{
 		"name": "Velocity",
 		"slug": "velocity",
 		"kind": "executor",
