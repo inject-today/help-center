@@ -1,0 +1,70 @@
+---
+// The top of the home page: the headline and the product finder, with what's
+// working right now beside them.
+import Finder from './Finder.astro';
+import StatusBoard from './StatusBoard.astro';
+import { products } from '../lib/products';
+
+interface Props {
+	/** The id Starlight's skip link points at. */
+	titleId: string;
+}
+
+const { titleId } = Astro.props;
+---
+
+<div class="home-hero">
+	<div class="intro">
+		<h1 id={titleId}>
+			Community-driven help <span>for all things Roblox.</span>
+		</h1>
+		<p>
+			Fixes for {products.length} executors and tools, written by the people who ran into the same problems
+			first.
+		</p>
+		<Finder />
+	</div>
+	<StatusBoard />
+</div>
+
+<style>
+	.home-hero {
+		display: grid;
+		gap: 2.5rem;
+		padding-block: clamp(2rem, 7vh, 4.5rem) 0.5rem;
+	}
+	.intro {
+		/* The headline sizes itself to this column. */
+		container-type: inline-size;
+		min-inline-size: 0;
+	}
+	h1 {
+		margin: 0;
+		max-inline-size: 13em;
+		color: var(--sl-color-white);
+		font-size: clamp(2.5rem, 8.6cqi, 4.5rem);
+		font-weight: 680;
+		line-height: 1.02;
+		letter-spacing: -0.045em;
+		text-wrap: balance;
+	}
+	h1 span {
+		color: var(--sl-color-gray-3);
+	}
+	p {
+		margin: 1.25rem 0 2rem;
+		max-inline-size: 34rem;
+		font-size: var(--sl-text-lg);
+		line-height: 1.55;
+		color: var(--sl-color-gray-2);
+		text-wrap: pretty;
+	}
+
+	@media (min-width: 60rem) {
+		.home-hero {
+			grid-template-columns: minmax(0, 1fr) 22rem;
+			align-items: center;
+			gap: 4rem;
+		}
+	}
+</style>

@@ -1,0 +1,261 @@
+---
+// "Right now" on the home page: how many products are updated for the latest
+// Roblox, which ones aren't, and when Roblox itself last updated. Built with the
+// status from build time; src/scripts/live-status.ts keeps it current.
+import ProductIcon from './ProductIcon.astro';
+import StatusBadge from './StatusBadge.astro';
+import { productHref, products } from '../lib/products';
+import { getRobloxUpdates, getStatuses } from '../lib/status';
+import { ROBLOX_PLATFORMS, WEAO_URL, shortDate, tally } from '../lib/weao.js';
+
+/** Products listed by name; any beyond this are summed up as "+N more". */
+const MAX_ROWS = 4;
+
+const statuses = await getStatuses();
+const roblox = await getRobloxUpdates();
+const { total, updated, mixed, outdated, waiting } = tally(statuses);
+const shown = waiting.slice(0, MAX_ROWS);
+// Every product gets a row, so the live status can show any of them. The ones
+// listed now come first, in order; the rest wait hidden.
+const rows = [
+	...shown.map((slug) => products.find((p) => p.slug === slug)!),
+	...products.filter((p) => !shown.includes(p.slug)),
+];
+---
+
+<section
+	class="board"
+	aria-labelledby="board-heading"
+	data-status-board
+	data-max={MAX_ROWS}
+	hidden={total === 0}
+>
+	<div class="head">
+		<h2 id="board-heading">Right now</h2>
+		<a class="source it-meta" href={WEAO_URL} target="_blank" rel="noopener noreferrer nofollow">
+			Status from WEAO
+		</a>
+	</div>
+
+	<p class="tally">
+		<strong data-count="updated">{updated}</strong>
+		<span>of <span data-count="total">{total}</span> updated for the latest Roblox</span>
+	</p>
+	<div class="meter" aria-hidden="true">
+		<span data-segment="updated" style={`flex-grow: ${updated}`} hidden={!updated}></span>
+		<span data-segment="mixed" style={`flex-grow: ${mixed}`} hidden={!mixed}></span>
+		<span data-segment="outdated" style={`flex-grow: ${outdated}`} hidden={!outdated}></span>
+	</div>
+
+	<ul class="waiting" role="list" aria-label="Not updated yet" data-rows>
+		{
+			rows.map((product) => (
+				<li data-board-row={product.slug} hidden={!shown.includes(product.slug)}>
+					<a href={productHref(product)}>
+						<ProductIcon product={product} size={30} />
+						<span class="name">{product.name}</span>
+						<StatusBadge slug={product.slug} />
+					</a>
+				</li>
+			))
+		}
+	</ul>
+	<p class="all-clear" data-all-clear hidden={waiting.length > 0}>
+		<span class="it-status" data-state="updated">
+			<span class="it-status-dot" aria-hidden="true"></span>Everything is updated
+		</span>
+	</p>
+	<a class="more it-meta" href="#all-heading" data-more hidden={waiting.length <= MAX_ROWS}>
+		+<span data-more-count>{Math.max(0, waiting.length - MAX_ROWS)}</span> more
+	</a>
+
+	<div class="roblox" data-roblox hidden={Object.keys(roblox).length === 0}>
+		<p class="it-meta">Roblox last updated</p>
+		<dl>
+			{
+				ROBLOX_PLATFORMS.map((platform) => (
+					<div data-roblox-platform={platform} hidden={!roblox[platform]}>
+						<dt>{platform}</dt>
+						<dd>
+							<time datetime={roblox[platform]}>{roblox[platform] && shortDate(roblox[platform])}</time>
+						</dd>
+					</div>
+				))
+			}
+		</dl>
+	</div>
+</section>
+
+<style>
+	.board {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		/* Under the finder on narrower screens, as wide as the finder. */
+		max-inline-size: 36rem;
+		padding: 1.25rem;
+		border-radius: var(--it-radius-lg);
+		background: var(--it-surface);
+		box-shadow: var(--it-shadow);
+	}
+	[hidden] {
+		display: none;
+	}
+
+	.head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	h2 {
+		margin: 0;
+		font-size: var(--sl-text-base);
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		color: var(--sl-color-white);
+	}
+	.source {
+		text-decoration: none;
+		transition: color 150ms ease;
+	}
+
+	.tally {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.25rem 0.625rem;
+		margin: 0.25rem 0 0;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+	}
+	.tally strong {
+		font-size: 2.75rem;
+		font-weight: 650;
+		line-height: 1;
+		letter-spacing: -0.045em;
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-white);
+	}
+
+	/* Updated, partly updated or with issues, and not updated, to scale. */
+	.meter {
+		display: flex;
+		gap: 3px;
+		block-size: 0.375rem;
+	}
+	.meter span {
+		min-inline-size: 0.375rem;
+		border-radius: 999px;
+	}
+	[data-segment='updated'] {
+		background: var(--it-ok);
+	}
+	[data-segment='mixed'] {
+		background: var(--it-warn);
+	}
+	[data-segment='outdated'] {
+		background: var(--it-bad);
+	}
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.125rem;
+		margin: 0 -0.5rem;
+		padding: 0;
+		list-style: none;
+	}
+	li a {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		min-block-size: 2.75rem;
+		padding: 0.375rem 0.625rem 0.375rem 0.5rem;
+		border-radius: var(--it-radius-sm);
+		color: var(--sl-color-white);
+		text-decoration: none;
+		-webkit-tap-highlight-color: transparent;
+		transition:
+			background-color 150ms ease,
+			transform 160ms var(--it-ease-out);
+	}
+	li a:active {
+		transform: scale(0.98);
+	}
+	li a:focus-visible {
+		outline: 2px solid var(--sl-color-white);
+		outline-offset: 2px;
+	}
+	.name {
+		flex: 1;
+		min-inline-size: 0;
+		overflow: hidden;
+		font-weight: 550;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.all-clear {
+		margin: 0;
+	}
+	.all-clear .it-status {
+		font-size: var(--sl-text-sm);
+	}
+	.more {
+		align-self: flex-start;
+		margin-top: -0.5rem;
+		text-decoration: none;
+		transition: color 150ms ease;
+	}
+
+	.roblox {
+		padding-top: 1rem;
+		border-top: 1px solid var(--it-edge);
+	}
+	.roblox p {
+		margin: 0 0 0.625rem;
+	}
+	dl {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 0.5rem 1rem;
+		margin: 0;
+	}
+	dl div {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1875rem;
+		min-inline-size: 0;
+	}
+	dt {
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+	}
+	dd {
+		margin: 0;
+		font-family: var(--__sl-font-mono);
+		font-size: 0.75rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--sl-color-gray-1);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		li a:hover {
+			background: color-mix(in oklab, var(--sl-color-white) 6%, transparent);
+		}
+		.source:hover,
+		.more:hover {
+			color: var(--sl-color-white);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		li a {
+			transition: background-color 150ms ease;
+		}
+		li a:active {
+			transform: none;
+		}
+	}
+</style>
