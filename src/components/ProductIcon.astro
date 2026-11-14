@@ -16,13 +16,25 @@ interface Props {
 const { product, size = 40, tinted = false, loading = 'lazy' } = Astro.props;
 const logo = logoFor(product);
 const fit = logo ? (product.logoFit ?? 'contain') : 'letters';
-// Wordmark-style logos need the room more than square marks do.
-const wide = logo !== undefined && logo.width / logo.height > 1.25;
+
+// Marks are sized by area, not by their longest side, so a tall bolt or a wide
+// pair of eyes looks as big as a square mark. A square mark takes MARK of the
+// tile; nothing gets wider or taller than MAX.
+const MARK = 0.66;
+const MAX = 0.78;
+let pad = '';
+if (logo && fit === 'contain') {
+	const ratio = Math.sqrt(logo.width / logo.height);
+	const shrink = Math.max((MARK * ratio) / MAX, MARK / ratio / MAX, 1);
+	const [width, height] = [(MARK * ratio) / shrink, MARK / ratio / shrink];
+	const margin = (share: number) => `${(((1 - share) / 2) * 100).toFixed(2)}%`;
+	pad = `; --pad: ${margin(height)} ${margin(width)}`;
+}
 ---
 
 <span
-	class:list={['icon', fit, { tinted, wide }]}
-	style={`--size: ${size}px; --hue: ${hueFor(product.slug)}; --tint: ${tintFor(product)}`}
+	class:list={['icon', fit, { tinted }]}
+	style={`--size: ${size}px; --hue: ${hueFor(product.slug)}; --tint: ${tintFor(product)}${pad}`}
 	aria-hidden="true"
 >
 	{
@@ -65,7 +77,11 @@ const wide = logo !== undefined && logo.width / logo.height > 1.25;
 			0 10px 28px -10px color-mix(in oklab, var(--tint) 55%, transparent);
 	}
 
+	/* Pinned to the tile itself: as a grid item, a logo that isn't square would
+	   stretch its row to its own shape and spill past the tile's edges. */
 	.icon :global(img) {
+		position: absolute;
+		inset: 0;
 		inline-size: 100%;
 		block-size: 100%;
 	}
@@ -74,10 +90,7 @@ const wide = logo !== undefined && logo.width / logo.height > 1.25;
 	}
 	.contain :global(img) {
 		object-fit: contain;
-		padding: 17%;
-	}
-	.contain.wide :global(img) {
-		padding: 9%;
+		padding: var(--pad, 17%);
 	}
 
 	.letters {
