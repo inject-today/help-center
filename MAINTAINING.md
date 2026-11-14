@@ -34,7 +34,9 @@ Edit `src/data/products.json`, run `npm run assets` (fetches the logo and a scre
 
 Status comes from WEAO's tracker, worked out in `src/lib/weao.js`: **Updated**, **Not updated** (not updated for the current Roblox version), **Has issues**, or **Partly updated** (updated on some platforms only). Product pages also show WEAO's detection warning, if there is one.
 
-- At build time, every page gets the status WEAO had then (`src/lib/status.ts`). If WEAO is down, the build still works; the badges are just missing.
+The home page's **Right now** panel (`src/components/StatusBoard.astro`) sums it up: how many products are updated, the ones that aren't (most urgent first, four at most), and when Roblox last updated on each platform, from WEAO's `https://weao.gg/api/versions/current`.
+
+- At build time, every page gets the status WEAO had then (`src/lib/status.ts`). If WEAO is down, the build still works; the badges and the Right now panel are just missing.
 - In the browser, `src/scripts/live-status.ts` asks `/api/status` for the current status and updates the page.
 - `/api/status` is served by the site's Worker (`workers/site/index.js`), which asks WEAO at most once a minute per Cloudflare location and keeps the last good answer if WEAO stops responding. Only `/api/*` requests run the Worker; pages and files are served straight from the build.
 

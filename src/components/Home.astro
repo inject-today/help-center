@@ -1,10 +1,8 @@
 ---
-// Home page body, under the headline: find a product, or browse them all.
-import Finder from './Finder.astro';
+// Home page body, under the hero (HomeHero.astro): popular products, then all of them.
 import ProductCard from './ProductCard.astro';
 import Segmented from './Segmented.astro';
 import { PLATFORMS, featuredProducts, products, reportFixUrl } from '../lib/products';
-import { WEAO_URL } from '../lib/weao.js';
 
 const platformOptions = [
 	{ value: '', label: 'All' },
@@ -13,17 +11,10 @@ const platformOptions = [
 ---
 
 <div class="home not-content">
-	<Finder />
-
 	{
 		featuredProducts.length > 0 && (
 			<section aria-labelledby="popular-heading">
-				<div class="catalog-head">
-					<h2 id="popular-heading">Popular</h2>
-					<a class="source it-meta" href={WEAO_URL} target="_blank" rel="noopener noreferrer nofollow">
-						Status from WEAO
-					</a>
-				</div>
+				<h2 id="popular-heading">Popular</h2>
 				<ul class="featured" role="list">
 					{featuredProducts.map((product) => (
 						<li>
@@ -140,15 +131,6 @@ const platformOptions = [
 	}
 	.catalog-head h2 {
 		margin: 0;
-	}
-	.source {
-		text-decoration: none;
-		transition: color 150ms ease;
-	}
-	@media (hover: hover) and (pointer: fine) {
-		.source:hover {
-			color: var(--sl-color-white);
-		}
 	}
 	.tiles {
 		display: grid;

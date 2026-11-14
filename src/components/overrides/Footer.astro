@@ -2,9 +2,13 @@
 import Default from '@astrojs/starlight/components/Footer.astro';
 import site from '../../data/site.json';
 import { repoUrl } from '../../lib/products';
+
+// The home page has no edit link, last-updated date or previous/next links,
+// so Starlight's footer would only add empty space there.
+const isHome = Astro.locals.starlightRoute.id === '';
 ---
 
-<Default />
+{!isHome && <Default />}
 <div class="site-footer" data-pagefind-ignore>
 	<div class="lead">
 		<span class="wordmark" aria-hidden="true">inject<span class="light"></span>today</span>

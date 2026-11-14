@@ -1,8 +1,9 @@
 ---
-// The title area of every page. The home page gets the headline, a product's
-// overview gets its icon, status and official links, and a guide gets a
-// breadcrumb back to its product plus when the fix was last checked.
+// The title area of every page. The home page gets its hero (HomeHero.astro),
+// a product's overview gets its icon, status and official links, and a guide
+// gets a breadcrumb back to its product plus when the fix was last checked.
 import Default from '@astrojs/starlight/components/PageTitle.astro';
+import HomeHero from '../HomeHero.astro';
 import ProductIcon from '../ProductIcon.astro';
 import StatusBadge from '../StatusBadge.astro';
 import { formatDate } from '../../lib/guides';
@@ -12,7 +13,6 @@ import {
 	platformsLabel,
 	productForId,
 	productHref,
-	products,
 	tintFor,
 } from '../../lib/products';
 
@@ -35,15 +35,7 @@ const officialLinks = product
 
 {
 	isHome ? (
-		<div class="home-hero">
-			<h1 id={TITLE_ID}>
-				Community-driven help <span>for all things Roblox.</span>
-			</h1>
-			<p>
-				Fixes for {products.length} executors and tools, written by the people who ran into the same
-				problems first.
-			</p>
-		</div>
+		<HomeHero titleId={TITLE_ID} />
 	) : isOverview ? (
 		<header class="product-hero" style={`--tint: ${tintFor(product)}`}>
 			<ProductIcon product={product} size={76} tinted loading="eager" />
@@ -123,29 +115,6 @@ const officialLinks = product
 		line-height: var(--sl-line-height-headings);
 		letter-spacing: -0.03em;
 		text-wrap: balance;
-	}
-
-	/* Home */
-	.home-hero {
-		padding-block: clamp(2rem, 7vh, 4.5rem) 0.5rem;
-	}
-	.home-hero h1 {
-		max-inline-size: 13em;
-		font-size: clamp(2.5rem, 1.5rem + 4.2vw, 4.5rem);
-		font-weight: 680;
-		line-height: 1.02;
-		letter-spacing: -0.045em;
-	}
-	.home-hero h1 span {
-		color: var(--sl-color-gray-3);
-	}
-	.home-hero p {
-		margin: 1.25rem 0 2rem;
-		max-inline-size: 34rem;
-		font-size: var(--sl-text-lg);
-		line-height: 1.55;
-		color: var(--sl-color-gray-2);
-		text-wrap: pretty;
 	}
 
 	/* Product overview */

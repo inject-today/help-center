@@ -6,6 +6,7 @@
 // Plain JavaScript, because the Worker imports it without a build step.
 
 export const WEAO_API = 'https://weao.gg/api/status/exploits';
+export const WEAO_VERSIONS_API = 'https://weao.gg/api/versions/current';
 export const WEAO_URL = 'https://weao.gg';
 
 /** @typedef {'updated' | 'outdated' | 'issues'} ListingState */
@@ -155,6 +156,70 @@ export function statusSummary(status, name) {
 	}
 }
 
+// Most urgent first: not working at all, then reported problems, then
+// working on some platforms only.
+/** @type {State[]} */
+const WAITING_ORDER = ['outdated', 'issues', 'partial'];
+
+/**
+ * How many products are updated, and which aren't, most urgent first.
+ * @param {Record<string, Status>} statuses
+ */
+export function tally(statuses) {
+	const entries = Object.entries(statuses);
+	/** @param {(state: State) => boolean} test */
+	const count = (test) => entries.filter(([, status]) => test(status.state)).length;
+	return {
+		total: entries.length,
+		updated: count((state) => state === 'updated'),
+		mixed: count((state) => state === 'issues' || state === 'partial'),
+		outdated: count((state) => state === 'outdated'),
+		/** Slugs of every product that isn't fully updated. */
+		waiting: entries
+			.filter(([, status]) => status.state !== 'updated')
+			.sort(
+				([a, x], [b, y]) =>
+					WAITING_ORDER.indexOf(x.state) - WAITING_ORDER.indexOf(y.state) || a.localeCompare(b)
+			)
+			.map(([slug]) => slug),
+	};
+}
+
+/** The platforms WEAO reports Roblox versions for, in the order the site lists them. */
+export const ROBLOX_PLATFORMS = ['Windows', 'Mac', 'Android', 'iOS'];
+
+/**
+ * When Roblox last updated on each platform, from WEAO's current versions.
+ * @param {unknown} body WEAO's response.
+ * @returns {Record<string, string>} ISO dates by platform. Empty if WEAO changes its format.
+ */
+export function robloxUpdates(body) {
+	/** @type {Record<string, string>} */
+	const updates = {};
+	if (!body || typeof body !== 'object') return updates;
+	for (const platform of ROBLOX_PLATFORMS) {
+		const seconds = /** @type {Record<string, any>} */ (body)[`${platform}Response`]?.timestamp;
+		if (typeof seconds !== 'number' || !Number.isFinite(seconds)) continue;
+		updates[platform] = new Date(seconds * 1000).toISOString();
+	}
+	return updates;
+}
+
+/**
+ * "Nov 6", with the year added when it isn't this year.
+ * @param {string} iso
+ */
+export function shortDate(iso) {
+	const date = new Date(iso);
+	const sameYear = date.getUTCFullYear() === new Date().getUTCFullYear();
+	return date.toLocaleDateString('en-US', {
+		month: 'short',
+		day: 'numeric',
+		year: sameYear ? undefined : 'numeric',
+		timeZone: 'UTC',
+	});
+}
+
 /**
  * "Version 2.6.1 · updated Nov 6", from what WEAO knows about a listing.
  * @param {Listing} listing
@@ -162,17 +227,7 @@ export function statusSummary(status, name) {
 export function versionLine(listing) {
 	const parts = [];
 	if (listing.version) parts.push(`Version ${listing.version.replace(/^v(?=\d)/i, '')}`);
-	if (listing.updated) {
-		const date = new Date(listing.updated);
-		const sameYear = date.getUTCFullYear() === new Date().getUTCFullYear();
-		const day = date.toLocaleDateString('en-US', {
-			month: 'short',
-			day: 'numeric',
-			year: sameYear ? undefined : 'numeric',
-			timeZone: 'UTC',
-		});
-		parts.push(`updated ${day}`);
-	}
+	if (listing.updated) parts.push(`updated ${shortDate(listing.updated)}`);
 	return parts.join(' · ');
 }
 

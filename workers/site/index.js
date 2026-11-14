@@ -1,7 +1,7 @@
 // The site's Worker. Pages and files are served straight from ./dist; only
 // requests under /api/ run this code (`run_worker_first` in wrangler.jsonc).
 import products from '../../src/data/products.json';
-import { WEAO_API, summarize } from '../../src/lib/weao.js';
+import { WEAO_API, WEAO_VERSIONS_API, robloxUpdates, summarize } from '../../src/lib/weao.js';
 
 // WEAO rate-limits its API (120 requests per window) and a product's status
 // changes a few times a week, so asking once a minute per Cloudflare location
@@ -11,18 +11,28 @@ const FRESH_FOR_SECONDS = 60;
 /** The last good answer, kept for as long as Cloudflare keeps this Worker warm. */
 let cached;
 
+async function weao(url) {
+	const response = await fetch(url, {
+		headers: { accept: 'application/json' },
+		cf: { cacheTtl: FRESH_FOR_SECONDS, cacheEverything: true },
+		signal: AbortSignal.timeout(5000),
+	});
+	if (!response.ok) throw new Error(`WEAO answered ${response.status} for ${url}`);
+	return response.json();
+}
+
 async function statusBody() {
 	if (cached && Date.now() - cached.at < FRESH_FOR_SECONDS * 1000) return cached.body;
 	try {
-		const response = await fetch(WEAO_API, {
-			headers: { accept: 'application/json' },
-			cf: { cacheTtl: FRESH_FOR_SECONDS, cacheEverything: true },
-			signal: AbortSignal.timeout(5000),
-		});
-		if (!response.ok) throw new Error(`WEAO answered ${response.status}`);
+		const [exploits, versions] = await Promise.all([
+			weao(WEAO_API),
+			// When Roblox last updated is extra context; status works without it.
+			weao(WEAO_VERSIONS_API).catch(() => undefined),
+		]);
 		const body = JSON.stringify({
 			checked: new Date().toISOString(),
-			products: summarize(products, await response.json()),
+			products: summarize(products, exploits),
+			roblox: robloxUpdates(versions),
 		});
 		cached = { at: Date.now(), body };
 		return body;
