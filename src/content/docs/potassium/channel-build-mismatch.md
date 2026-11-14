@@ -24,9 +24,8 @@ The installed Roblox client version does not match the build version required by
     - _Verification:_ The name begins precisely with `version-` and has no extra wrapper text attached to the front.
 - If your download is zipped, right-click and extract it into a normal folder. Take that clean, renamed `version-xxxxxx` folder and drag it right into your `%localappdata%\Roblox\Versions` directory.
     - _Verification:_ Start up Roblox and attach Potassium; the channel build mismatch error will be gone, and the tool will run normally.
-- **Still not working?:** Check the official Potassium Discord status channel. If the status indicator is red, it means the executor itself is currently down, so swapping the Roblox files won't work until the developers push an update.
 - **Video Guide:** [Downgrading/Installing latest version guide on YouTube](https://www.youtube.com/watch?v=fqQgB24vlDw).
 
 ## Still not working?
 
-What to try next, or where to ask.
+Check the official Potassium Discord status channel. If the status indicator is red, it means the executor itself is currently down or waiting for a game update, so swapping the Roblox files won't work until the developers push an update.
