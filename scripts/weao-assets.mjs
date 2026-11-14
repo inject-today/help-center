@@ -32,7 +32,8 @@ for (const product of products) {
 	const logoFile = new URL('logo.webp', dir);
 	const screenshotFile = new URL('screenshot.webp', dir);
 
-	if (logoUrl && (force || !existsSync(logoFile))) {
+	// Logos added with `npm run logo` were picked by hand; keep them.
+	if (logoUrl && !product.customLogo && (force || !existsSync(logoFile))) {
 		try {
 			if (await saveLogo(product, await download(logoUrl))) listChanged = true;
 			console.log(`${product.name}: logo`);

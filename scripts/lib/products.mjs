@@ -57,6 +57,12 @@ export function validateProducts(products) {
 		if (p.logoFit !== undefined && !['cover', 'contain'].includes(p.logoFit)) {
 			problems.push(`${at}: "logoFit" must be "cover" or "contain".`);
 		}
+		if (p.customLogo !== undefined && p.customLogo !== true) {
+			problems.push(`${at}: "customLogo" can only be true; leave it out otherwise.`);
+		}
+		if (p.formerly !== undefined && (typeof p.formerly !== 'string' || !p.formerly.trim())) {
+			problems.push(`${at}: "formerly" must be the product's old name.`);
+		}
 		if (p.color !== undefined && !/^#[0-9a-f]{6}$/i.test(p.color)) {
 			problems.push(`${at}: "color" must be a hex color like #3a7bd5.`);
 		}

@@ -22,13 +22,19 @@ Before approving, open every link listed under **External links added** in the c
 
 ## Adding or changing a product
 
-Edit `src/data/products.json`, run `npm run assets` (fetches the logo and a screenshot from WEAO into `src/assets/products/<slug>/`) and `npm run sync`, then open a pull request. If WEAO has no logo, or you want a different one, run `npm run logo -- <slug> <image file>` instead; a square image of 256×256 or larger looks best. Products with no logo at all get a letter tile. Fields:
+Edit `src/data/products.json`, run `npm run assets` (fetches the logo and a screenshot from WEAO into `src/assets/products/<slug>/`) and `npm run sync`, then open a pull request. If WEAO has no logo, or a worse one than the product's own site, run `npm run logo -- <slug> <image file>` instead (SVG works too; otherwise a square image of 256×256 or larger looks best). Products with no logo at all get a letter tile.
+
+Both scripts make logos look alike on the site: a mark on a plain black square is lifted off the black, empty margins are cut away so every mark sits at the same size on its tile, and a logo that fills its square is cropped to the middle square.
+
+The fields:
 
 - `name`, `slug` (the URL, lowercase with dashes), `kind` (`executor` or `external`), `platforms` (`Windows`, `Mac`, `Android`, `iOS`)
+- `formerly`: the old name of a renamed product. The product page shows it, and the home page's finder matches it. When a product is renamed, change `name` and `slug`, rename its folder in `src/assets/products/`, and put the old name here.
 - `links.website`, `links.discord`: official links only.
 - `featured`: a number puts the product in the home page's **Popular** grid at that position; leave it out to not feature it.
 - `weaoIds`: the product's tracker IDs on WEAO (`trackerId` in `https://weao.gg/api/status/exploits`), one per platform listing. Logos, screenshots and the live status come from these. A product WEAO doesn't list simply shows no status.
 - `logoFit` and `color` are set by `npm run assets` and `npm run logo`: whether the logo fills its tile, and the brand color its glow uses. Edit `color` by hand if the picked one looks off.
+- `customLogo`: set by `npm run logo`. `npm run assets` never replaces these logos, not even with `--force`.
 
 ## Product status
 

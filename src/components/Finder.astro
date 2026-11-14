@@ -40,12 +40,15 @@ const searchIcon =
 						aria-selected="false"
 						data-option
 						data-name={product.name}
+						data-formerly={product.formerly}
 						data-href={productHref(product)}
 						hidden
 					>
 						<ProductIcon product={product} size={30} />
 						<span class="option-name">{product.name}</span>
-						<span class="it-meta">{platformsLabel(product)}</span>
+						<span class="it-meta">
+							{product.formerly ? `Formerly ${product.formerly}` : platformsLabel(product)}
+						</span>
 					</li>
 				))
 			}
@@ -74,12 +77,16 @@ const searchIcon =
 		const listbox = panel.querySelector<HTMLElement>('[role="listbox"]')!;
 		const guides = finder.querySelector<HTMLElement>('[data-guides]')!;
 		const echo = finder.querySelector<HTMLElement>('[data-query-echo]')!;
+		// A renamed product still answers to its old name.
 		const products = [...finder.querySelectorAll<HTMLElement>('[data-option]:not([data-guides])')].map(
-			(option) => ({
-				option,
-				name: compact(option.dataset.name!),
-				words: option.dataset.name!.toLowerCase().split(/\s+/).map(compact),
-			})
+			(option) => {
+				const names = [option.dataset.name, option.dataset.formerly].filter((n): n is string => !!n);
+				return {
+					option,
+					names: names.map(compact),
+					words: names.flatMap((n) => n.toLowerCase().split(/\s+/).map(compact)),
+				};
+			}
 		);
 		let visible: HTMLElement[] = [];
 		let active = -1;
@@ -109,8 +116,14 @@ const searchIcon =
 			if (!query) return close();
 
 			// Names that start with the query first, then a word that does, then anywhere.
-			const rank = ({ name, words }: (typeof products)[number]) =>
-				name.startsWith(query) ? 0 : words.some((w) => w.startsWith(query)) ? 1 : name.includes(query) ? 2 : -1;
+			const rank = ({ names, words }: (typeof products)[number]) =>
+				names.some((n) => n.startsWith(query))
+					? 0
+					: words.some((w) => w.startsWith(query))
+						? 1
+						: names.some((n) => n.includes(query))
+							? 2
+							: -1;
 			const matches = products
 				.map((p) => ({ ...p, score: rank(p) }))
 				.filter((p) => p.score >= 0)
