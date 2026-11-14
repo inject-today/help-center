@@ -45,6 +45,7 @@ const officialLinks = product
 					<StatusBadge slug={product.slug} />
 					<span class="it-meta">
 						{platformsLabel(product)} · {kindLabel[product.kind]}
+						{product.formerly && ` · Formerly ${product.formerly}`}
 					</span>
 				</p>
 			</div>

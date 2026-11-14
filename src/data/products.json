@@ -14,7 +14,8 @@
 			"WEAO4ef9k768"
 		],
 		"logoFit": "contain",
-		"color": "#5297ff"
+		"color": "#5398fe",
+		"customLogo": true
 	},
 	{
 		"name": "Codex",
@@ -31,22 +32,8 @@
 			"WEAO765cd973"
 		],
 		"logoFit": "cover",
-		"color": "#fa0505"
-	},
-	{
-		"name": "Cosmic",
-		"slug": "cosmic",
-		"kind": "executor",
-		"platforms": [
-			"Windows"
-		],
-		"links": {
-			"website": "https://cosmic.best"
-		},
-		"weaoIds": [
-			"WEAOmhg67xtg"
-		],
-		"logoFit": "contain"
+		"color": "#fb0404",
+		"customLogo": true
 	},
 	{
 		"name": "Delta",
@@ -65,7 +52,8 @@
 			"WEAO719ba76e"
 		],
 		"featured": 2,
-		"logoFit": "cover"
+		"logoFit": "contain",
+		"customLogo": true
 	},
 	{
 		"name": "DX9WARE V2",
@@ -81,8 +69,9 @@
 		"weaoIds": [
 			"WEAO1181f437"
 		],
-		"logoFit": "cover",
-		"color": "#d79c28"
+		"logoFit": "contain",
+		"color": "#feb72a",
+		"customLogo": true
 	},
 	{
 		"name": "Isaeva",
@@ -115,7 +104,26 @@
 			"WEAO76ngr5y7"
 		],
 		"logoFit": "contain",
-		"color": "#7995d8"
+		"color": "#7996d8",
+		"customLogo": true
+	},
+	{
+		"name": "Lynx",
+		"slug": "lynx",
+		"formerly": "Cosmic",
+		"kind": "executor",
+		"platforms": [
+			"Windows"
+		],
+		"links": {
+			"website": "https://getlynx.gg",
+			"discord": "https://discord.gg/getlynx"
+		},
+		"weaoIds": [
+			"WEAOmhg67xtg"
+		],
+		"logoFit": "contain",
+		"customLogo": true
 	},
 	{
 		"name": "MacSploit",
@@ -132,7 +140,8 @@
 			"WEAO10179289"
 		],
 		"featured": 6,
-		"logoFit": "contain"
+		"logoFit": "contain",
+		"customLogo": true
 	},
 	{
 		"name": "Madium",
@@ -164,7 +173,8 @@
 		"weaoIds": [
 			"WEAO957nhh9s"
 		],
-		"logoFit": "cover"
+		"logoFit": "cover",
+		"customLogo": true
 	},
 	{
 		"name": "Matcha",
@@ -182,7 +192,8 @@
 		],
 		"featured": 5,
 		"logoFit": "contain",
-		"color": "#d87997"
+		"color": "#d87997",
+		"customLogo": true
 	},
 	{
 		"name": "Matrix Hub",
@@ -199,7 +210,8 @@
 			"WEAO6ee0e3b5"
 		],
 		"logoFit": "contain",
-		"color": "#54b2fc"
+		"color": "#55affc",
+		"customLogo": true
 	},
 	{
 		"name": "Opiumware",
@@ -217,7 +229,7 @@
 		],
 		"featured": 7,
 		"logoFit": "cover",
-		"color": "#396ec6"
+		"color": "#398bc6"
 	},
 	{
 		"name": "Photon",
@@ -233,7 +245,8 @@
 		"weaoIds": [
 			"WEAO6c35cab4"
 		],
-		"logoFit": "cover"
+		"logoFit": "cover",
+		"customLogo": true
 	},
 	{
 		"name": "Potassium",
@@ -283,7 +296,8 @@
 			"WEAO622afd8b"
 		],
 		"logoFit": "cover",
-		"color": "#9379d8"
+		"color": "#9479d8",
+		"customLogo": true
 	},
 	{
 		"name": "Serotonin",
@@ -301,7 +315,8 @@
 		],
 		"featured": 3,
 		"logoFit": "contain",
-		"color": "#3ec7b9"
+		"color": "#47cabc",
+		"customLogo": true
 	},
 	{
 		"name": "Severe",
@@ -317,7 +332,8 @@
 			"WEAO4ef92j18"
 		],
 		"logoFit": "cover",
-		"color": "#f1608d"
+		"color": "#ef618d",
+		"customLogo": true
 	},
 	{
 		"name": "SirHurt",
@@ -334,7 +350,7 @@
 			"WEAO5caeb4a7"
 		],
 		"logoFit": "contain",
-		"color": "#1261ed"
+		"color": "#0f60f0"
 	},
 	{
 		"name": "Solara",
@@ -351,7 +367,7 @@
 			"WEAO1af938a2"
 		],
 		"logoFit": "cover",
-		"color": "#6604fb"
+		"color": "#6504fb"
 	},
 	{
 		"name": "Synapse Z",
@@ -367,7 +383,8 @@
 		"weaoIds": [
 			"WEAO228206d0"
 		],
-		"logoFit": "contain"
+		"logoFit": "contain",
+		"customLogo": true
 	},
 	{
 		"name": "Velocity",
@@ -400,7 +417,7 @@
 			"WEAO57c866d0"
 		],
 		"logoFit": "contain",
-		"color": "#db783a"
+		"color": "#dc7939"
 	},
 	{
 		"name": "Volt",
@@ -410,7 +427,7 @@
 			"Windows"
 		],
 		"links": {
-			"website": "https://voltbz.net/",
+			"website": "https://volt.rs/",
 			"discord": "https://discord.com/invite/voltbz"
 		},
 		"weaoIds": [
@@ -418,7 +435,7 @@
 		],
 		"featured": 1,
 		"logoFit": "contain",
-		"color": "#7e5af7"
+		"customLogo": true
 	},
 	{
 		"name": "Wave",
@@ -435,8 +452,8 @@
 			"WEAO2c8e5827"
 		],
 		"featured": 8,
-		"logoFit": "cover",
-		"color": "#398fc6"
+		"logoFit": "contain",
+		"color": "#49b7fe"
 	},
 	{
 		"name": "Xeno",
@@ -452,7 +469,6 @@
 		"weaoIds": [
 			"WEAO08b7927f"
 		],
-		"logoFit": "cover",
-		"color": "#7997d8"
+		"logoFit": "contain"
 	}
 ]

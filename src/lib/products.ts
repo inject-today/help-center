@@ -10,6 +10,8 @@ export interface Product {
 	slug: string;
 	kind: ProductKind;
 	platforms: Platform[];
+	/** The product's old name, if it was renamed, so people searching for that still find it. */
+	formerly?: string;
 	links: { website?: string; discord?: string };
 	/** WEAO tracker IDs, one per platform listing. Logos, screenshots and live status come from these. */
 	weaoIds: string[];
@@ -19,6 +21,8 @@ export interface Product {
 	logoFit?: 'cover' | 'contain';
 	/** Brand color taken from the logo, for glows and tinted shadows. Set by `npm run assets`. */
 	color?: string;
+	/** The logo was picked by hand with `npm run logo`, so `npm run assets` leaves it alone. */
+	customLogo?: true;
 }
 
 export interface Category {
