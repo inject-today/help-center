@@ -1,7 +1,7 @@
 ---
 title: Account Safety While Using Alternate Accounts
 description: Best practices for protecting your primary Roblox account when using alternate accounts for script execution.
-category: other
+category: getting-started
 appliesTo: All versions
 verifiedOn: 2026-11-19
 ---
